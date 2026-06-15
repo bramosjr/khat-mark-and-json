@@ -1,5 +1,7 @@
 # Khat MarkItDown
 
+![Screenshot do Aplicativo](assets/screenshot.png)
+
 > "A principal palavra egípcia antiga para o corpo físico que abriga o espírito é **Khat** (também grafado como Kha). Este termo refere-se especificamente ao corpo material e mortal, sujeito à decomposição, que servia como receptáculo ou 'navio' terreno para as partes imortais da alma (como o Ba e o Ka). É por causa da importância do Khat como âncora para o espírito que os antigos egípcios desenvolveram rituais complexos de mumificação para preservá-lo."
 
 Inspirado nessa mitologia, o **Khat MarkItDown** nasceu com um propósito exato: fornecer um "corpo" visual e acessível. 
