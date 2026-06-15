@@ -2,6 +2,9 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "author": "Jorge Ramos <jorgebramosjr@gmail.com>",
+  "homepage": "https://github.com/bramosjr/khat",
+  "description": "MarkItDown GUI - A modern interface for document conversion",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -61,8 +64,7 @@
       "target": [
         "deb",
         "rpm",
-        "AppImage",
-        "flatpak"
+        "AppImage"
       ]
     }
   }

@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+markitdown[all]
+openai
+pyinstaller
+python-multipart
