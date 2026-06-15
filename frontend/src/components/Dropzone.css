@@ -1,0 +1,106 @@
+.dropzone-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.dropzone-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border-glass);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.dropzone-area.drag-active {
+  border-color: var(--accent);
+  background: var(--bg-glass-hover);
+  transform: scale(1.02);
+}
+
+.dropzone-area.processing {
+  border-color: var(--accent);
+  animation: pulseBorder 2s infinite;
+}
+
+.file-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.icon-container {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.drag-active .icon-container {
+  transform: translateY(-10px);
+  background: var(--accent);
+}
+
+.upload-icon {
+  color: var(--text-primary);
+}
+
+.dropzone-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.dropzone-content p {
+  color: var(--text-secondary);
+}
+
+.browse-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 2rem;
+  background: var(--accent);
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.file-input:hover + .dropzone-content .browse-btn {
+  background: var(--accent-hover);
+}
+
+.processing-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--border-glass);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
