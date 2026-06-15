@@ -1,12 +1,12 @@
-# Khat
+# Khat MarkItDown
 
 > "A principal palavra egípcia antiga para o corpo físico que abriga o espírito é **Khat** (também grafado como Kha). Este termo refere-se especificamente ao corpo material e mortal, sujeito à decomposição, que servia como receptáculo ou 'navio' terreno para as partes imortais da alma (como o Ba e o Ka). É por causa da importância do Khat como âncora para o espírito que os antigos egípcios desenvolveram rituais complexos de mumificação para preservá-lo."
 
-![Screenshot do Aplicativo](assets/screenshot.png)
+Inspirado nessa mitologia, o **Khat MarkItDown** nasceu com um propósito exato: fornecer um "corpo" visual e acessível. 
 
-Uma interface gráfica moderna e elegante (Khat) que serve como corpo e receptáculo para o utilitário [MarkItDown da Microsoft](https://github.com/microsoft/markitdown) (o espírito/motor).
+Enquanto a robusta biblioteca original [MarkItDown da Microsoft](https://github.com/microsoft/markitdown) atua nos bastidores como o poderoso "espírito" do projeto — operando de forma invisível através de linhas de código e terminais de comando — este projeto é o seu **receptáculo terreno**. 
 
-Converta arquivos como PDF, Word, Excel, PPT, Áudio e Imagens para Markdown instantaneamente, sem precisar usar a linha de comando. Suporta integração nativa com modelos de IA (via OpenAI) para a transcrição rica de imagens complexas.
+O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse motor em algo tátil e amigável. Ele abriga a incrível força de conversão documental e extração por IA dentro de um "corpo" visual elegante, permitindo que o imenso poder da ferramenta ganhe forma, se torne duradouro e seja operado por qualquer pessoa sem necessidade de conhecimento em programação.
 
 ## Recursos
 - **Multi-plataforma**: Construído com Electron, rodando nativamente no Windows, macOS e Linux (.deb, .rpm, .AppImage, flatpak).

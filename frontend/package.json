@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.1.0",
   "author": "Jorge Ramos <jrbramosjr1985@gmail.com>",
   "homepage": "https://github.com/bramosjr/khat",
   "repository": "https://github.com/bramosjr/khat",
@@ -38,7 +38,7 @@
   "main": "main.cjs",
   "build": {
     "appId": "com.bramosjr.markitdown",
-    "productName": "MarkItDown",
+    "productName": "Khat MarkItDown",
     "icon": "public/icone.png",
     "directories": {
       "output": "release"
