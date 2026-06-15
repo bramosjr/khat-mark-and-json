@@ -35,6 +35,7 @@
   "build": {
     "appId": "com.bramosjr.markitdown",
     "productName": "MarkItDown",
+    "icon": "public/icon.png",
     "directories": {
       "output": "release"
     },
