@@ -1,5 +1,7 @@
 # MarkItDown GUI
 
+![Screenshot do Aplicativo](assets/screenshot.png)
+
 Uma interface gráfica moderna e elegante para o utilitário [MarkItDown da Microsoft](https://github.com/microsoft/markitdown).
 
 Converta arquivos como PDF, Word, Excel, PPT, Áudio e Imagens para Markdown instantaneamente, sem precisar usar a linha de comando. Suporta integração nativa com modelos de IA (via OpenAI) para a transcrição rica de imagens complexas.
