@@ -58,3 +58,13 @@ Os arquivos finais de instalação estarão dentro de `frontend/release/`.
 ## Licença e Créditos
 Este projeto utiliza e funciona como uma interface gráfica para a biblioteca de código aberto `markitdown` criada pela Microsoft, distribuída sob a Licença MIT. 
 Todo o código original de interface (GUI) e infraestrutura presente neste repositório também pode ser utilizado sob a Licença MIT.
+
+---
+
+## ☕ Apoie o Projeto (Doações)
+Este projeto é desenvolvido e mantido de forma totalmente independente e de código aberto. Se o **Khat MarkItDown** economizou seu tempo e otimizou seu fluxo de trabalho, considere apoiar o desenvolvimento contínuo fazendo uma doação via **Pix**!
+
+**Chave Pix (Aleatória):**
+`0d323a66-4090-4e03-aa6d-889abfac5ee7`
+
+Qualquer valor é imensamente agradecido e ajuda a manter ferramentas livres e gratuitas vivas! ❤️
