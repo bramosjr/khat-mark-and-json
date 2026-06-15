@@ -11,18 +11,17 @@
   content: "";
   position: fixed;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70vw;
+  left: -5vw;
+  transform: translateY(-50%);
+  width: 45vw;
   height: 70vh;
-  background-image: url('/icon.png');
+  background-image: url('/bg-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.04;
+  background-position: left center;
+  opacity: 0.15;
   z-index: -1;
   pointer-events: none;
-  filter: grayscale(100%);
 }
 
 .header {
