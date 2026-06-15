@@ -43,6 +43,16 @@ async def convert_file(
             content = await file.read()
             temp_file.write(content)
             temp_file_path = temp_file.name
+            
+        if suffix.lower() == '.ods':
+            import pandas as pd
+            dfs = pd.read_excel(temp_file_path, engine="odf", sheet_name=None)
+            xlsx_path = temp_file_path + ".xlsx"
+            with pd.ExcelWriter(xlsx_path, engine='openpyxl') as writer:
+                for sheet_name, df in dfs.items():
+                    df.to_excel(writer, sheet_name=sheet_name, index=False)
+            os.remove(temp_file_path)
+            temp_file_path = xlsx_path
         
         result = md.convert(temp_file_path)
         

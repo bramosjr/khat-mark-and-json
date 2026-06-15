@@ -4,3 +4,6 @@ markitdown[all]
 openai
 pyinstaller
 python-multipart
+pandas
+odfpy
+openpyxl

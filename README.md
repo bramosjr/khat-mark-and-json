@@ -33,7 +33,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
    cd backend
    python -m venv venv
    source venv/bin/activate  # ou venv\Scripts\activate no Windows
-   pip install "markitdown[all]" fastapi uvicorn python-multipart pyinstaller openai
+   pip install "markitdown[all]" fastapi uvicorn python-multipart pyinstaller openai pandas odfpy openpyxl
    ```
 2. Inicie o Electron no modo Dev:
    ```bash
