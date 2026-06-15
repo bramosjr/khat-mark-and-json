@@ -69,6 +69,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  app.setAppUserModelId('com.bramosjr.markitdown');
   startPythonBackend();
   createWindow();
 
