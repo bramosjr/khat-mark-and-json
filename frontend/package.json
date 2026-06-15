@@ -64,8 +64,12 @@
       "target": [
         "deb",
         "rpm",
-        "AppImage"
+        "AppImage",
+        "flatpak"
       ]
+    },
+    "flatpak": {
+      "runtimeVersion": "23.08"
     }
   }
 }
