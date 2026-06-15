@@ -101,9 +101,7 @@ function App() {
       )}
 
       <header className="header animate-fade-in">
-        <div className="title-container">
-          <h1>MarkItDown</h1>
-        </div>
+        <h1>MarkItDown</h1>
         <p>Converta qualquer documento (até mesmo imagens) em Markdown.</p>
       </header>
 
