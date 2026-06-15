@@ -1,7 +1,9 @@
 # Khat MarkItDown
 
-![Tela Inicial do Aplicativo](assets/screenshot.png)
-![Aplicativo em Ação](assets/screenshot2.png)
+<p align="center">
+  <img src="assets/screenshot.png" width="49%" alt="Tela Inicial do Aplicativo">
+  <img src="assets/screenshot2.png" width="49%" alt="Aplicativo em Ação">
+</p>
 
 > "A principal palavra egípcia antiga para o corpo físico que abriga o espírito é **Khat** (também grafado como Kha). Este termo refere-se especificamente ao corpo material e mortal, sujeito à decomposição, que servia como receptáculo ou 'navio' terreno para as partes imortais da alma (como o Ba e o Ka). É por causa da importância do Khat como âncora para o espírito que os antigos egípcios desenvolveram rituais complexos de mumificação para preservá-lo."
 
