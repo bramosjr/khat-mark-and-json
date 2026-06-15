@@ -58,7 +58,7 @@ function createWindow() {
     },
     autoHideMenuBar: true,
     backgroundColor: '#0a0a0c', // Matches our CSS --bg-primary
-    icon: path.join(__dirname, 'public', 'icon.png')
+    icon: path.join(__dirname, 'public', 'icone.png')
   });
 
   if (app.isPackaged) {
