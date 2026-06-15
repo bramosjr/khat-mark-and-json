@@ -15,6 +15,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 - **Design Premium**: Interface baseada em *Glassmorphism* limpa e intuitiva construída com React e Vite.
 - **Backend Autônomo**: Processamento via FastAPI no Python, empacotado internamente (Sidecar) via PyInstaller.
 - **Suporte a LLM (Inteligência Artificial)**: Basta inserir sua chave de API nas configurações para liberar leitura de imagens e diagramas avançados.
+- **Suporte Estendido de Arquivos**: Além dos formatos suportados nativamente pelo motor original (PDF, DOCX, XLSX, PPTX, HTML, CSV, Áudio e Imagens), o **Khat estende a biblioteca da Microsoft**, adicionando interceptadores exclusivos para dar suporte inédito a arquivos do LibreOffice/OpenDocument (`.ods` e `.odt`).
 
 ## Estrutura do Projeto
 - `/backend`: API Python e script de compilação do sidecar (`build.sh`).
