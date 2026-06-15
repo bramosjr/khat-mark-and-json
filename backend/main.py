@@ -53,6 +53,17 @@ async def convert_file(
                     df.to_excel(writer, sheet_name=sheet_name, index=False)
             os.remove(temp_file_path)
             temp_file_path = xlsx_path
+            
+        elif suffix.lower() == '.odt':
+            from odf.opendocument import load
+            from odf import text, teletype
+            doc = load(temp_file_path)
+            allparas = doc.getElementsByType(text.P)
+            extracted_text = ""
+            for p in allparas:
+                extracted_text += teletype.extractText(p) + "\n\n"
+            os.remove(temp_file_path)
+            return {"markdown": extracted_text.strip()}
         
         result = md.convert(temp_file_path)
         
