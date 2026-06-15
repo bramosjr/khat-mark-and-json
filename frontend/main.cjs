@@ -1,7 +1,11 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const os = require('os');
+const crypto = require('crypto');
+
+const khatToken = crypto.randomBytes(32).toString('hex');
+ipcMain.handle('get-token', () => khatToken);
 
 let mainWindow;
 let pythonProcess = null;
@@ -27,7 +31,8 @@ function startPythonBackend() {
   try {
     pythonProcess = spawn(cmd, args, {
       detached: false,
-      stdio: 'pipe'
+      stdio: 'pipe',
+      env: { ...process.env, KHAT_TOKEN: khatToken }
     });
 
     pythonProcess.stdout.on('data', (data) => {

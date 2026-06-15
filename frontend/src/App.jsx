@@ -34,8 +34,15 @@ function App() {
     }
 
     try {
+      let headers = {}
+      if (window.electronAPI && window.electronAPI.getToken) {
+        const token = await window.electronAPI.getToken()
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
       const response = await fetch('http://127.0.0.1:8000/api/convert', {
         method: 'POST',
+        headers: headers,
         body: formData,
       })
 
