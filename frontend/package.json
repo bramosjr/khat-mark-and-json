@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": true,
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "Jorge Ramos <jrbramosjr1985@gmail.com>",
   "homepage": "https://github.com/bramosjr/khat",
   "repository": "https://github.com/bramosjr/khat",
@@ -45,12 +45,8 @@
     },
     "extraResources": [
       {
-        "from": "../backend/dist",
-        "to": "markitdown-backend",
-        "filter": [
-          "markitdown-backend",
-          "markitdown-backend.exe"
-        ]
+        "from": "../backend/dist/markitdown-backend",
+        "to": "markitdown-backend"
       }
     ],
     "mac": {

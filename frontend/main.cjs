@@ -32,6 +32,7 @@ function startPythonBackend() {
     pythonProcess = spawn(cmd, args, {
       detached: false,
       stdio: 'pipe',
+      windowsHide: true,
       env: { ...process.env, KHAT_TOKEN: khatToken }
     });
 
