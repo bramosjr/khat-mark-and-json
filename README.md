@@ -23,7 +23,6 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 ## Estrutura do Projeto
 - `/backend`: API Python e script de compilação do sidecar (`build.sh`).
 - `/frontend`: Aplicação Vite + React e orquestrador Electron (`main.cjs`).
-- `/suporte`: Documentações e planejamento do projeto.
 
 ## Como Rodar Localmente (Desenvolvimento)
 
