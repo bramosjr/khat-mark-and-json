@@ -60,7 +60,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      sandbox: false
     },
     autoHideMenuBar: true,
     backgroundColor: '#0a0a0c', // Matches our CSS --bg-primary
