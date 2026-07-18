@@ -16,13 +16,15 @@ jobs:
       - name: Create Release (draft, idempotent)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
         run: |
-          if ! gh release view "${{ github.ref_name }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
-            gh release create "${{ github.ref_name }}" \
-              --repo "${{ github.repository }}" \
-              --title "${{ github.ref_name }}" \
+          if ! gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            gh release create "$TAG" \
+              --repo "$REPO" \
+              --title "$TAG" \
               --draft \
-              --notes "Release ${{ github.ref_name }}"
+              --notes "Release $TAG"
           fi
 
   build-and-release:
