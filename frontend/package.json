@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
+  "name": "khat-mark-and-json",
   "private": true,
-  "version": "1.2.5",
+  "version": "1.0.0",
+  "productName": "Khat Mark And Json",
   "author": "Jorge Ramos <jrbramosjr1985@gmail.com>",
   "homepage": "https://github.com/bramosjr/khat",
   "repository": "https://github.com/bramosjr/khat",
@@ -38,31 +39,37 @@
   "main": "main.cjs",
   "build": {
     "appId": "com.bramosjr.markitdown",
-    "productName": "Khat MarkItDown",
+    "productName": "Khat Mark And Json",
     "icon": "public/icone.png",
     "directories": {
       "output": "release"
     },
-    "extraResources": [
-      {
-        "from": "../backend/dist/markitdown-backend",
-        "to": "markitdown-backend"
-      }
-    ],
+
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "extraResources": [
+        {
+          "from": "../backend/dist/markitdown-backend",
+          "to": "markitdown-backend"
+        }
+      ]
     },
     "win": {
-      "target": [
-        "nsis"
+      "target": ["nsis"],
+      "extraResources": [
+        {
+          "from": "../backend/dist/markitdown-backend.exe",
+          "to": "markitdown-backend.exe"
+        }
       ]
     },
     "linux": {
-      "target": [
-        "deb",
-        "rpm",
-        "AppImage",
-        "flatpak"
+      "target": ["deb", "rpm", "AppImage"],
+      "extraResources": [
+        {
+          "from": "../backend/dist/markitdown-backend",
+          "to": "markitdown-backend"
+        }
       ]
     },
     "flatpak": {

@@ -1,4 +1,4 @@
-# Khat MarkItDown
+# Khat Mark And Json
 
 <p align="center">
   <img src="assets/screenshot.png" width="49%" alt="Tela Inicial do Aplicativo">
@@ -7,13 +7,14 @@
 
 > "A principal palavra egípcia antiga para o corpo físico que abriga o espírito é **Khat** (também grafado como Kha). Este termo refere-se especificamente ao corpo material e mortal, sujeito à decomposição, que servia como receptáculo ou 'navio' terreno para as partes imortais da alma (como o Ba e o Ka). É por causa da importância do Khat como âncora para o espírito que os antigos egípcios desenvolveram rituais complexos de mumificação para preservá-lo."
 
-Inspirado nessa mitologia, o **Khat MarkItDown** nasceu com um propósito exato: fornecer um "corpo" visual e acessível. 
+Inspirado nessa mitologia, o **Khat Mark And Json** nasceu com um propósito exato: fornecer um "corpo" visual e acessível. 
 
 Enquanto a robusta biblioteca original [MarkItDown da Microsoft](https://github.com/microsoft/markitdown) atua nos bastidores como o poderoso "espírito" do projeto — operando de forma invisível através de linhas de código e terminais de comando — este projeto é o seu **receptáculo terreno**. 
 
-O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse motor em algo tátil e amigável. Ele abriga a incrível força de conversão documental e extração por IA dentro de um "corpo" visual elegante, permitindo que o imenso poder da ferramenta ganhe forma, se torne duradouro e seja operado por qualquer pessoa sem necessidade de conhecimento em programação.
+O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse motor em algo tátil e amigável. Ele abriga a incrível força de conversão para Markdown limpo e extração de dados estruturados em JSON dentro de um "corpo" visual elegante, permitindo que o imenso poder da ferramenta ganhe forma, se torne duradouro e seja operado por qualquer pessoa sem necessidade de conhecimento em programação.
 
 ## Recursos
+- **Saída Dupla (Markdown e JSON)**: Escolha entre converter seus documentos para um formato de leitura limpo (Markdown) ou extrair todos os dados em um formato puramente estruturado (JSON), pronto para bancos de dados e APIs.
 - **Multi-plataforma**: Construído com Electron, rodando nativamente no Windows, macOS e Linux (.deb, .rpm, .AppImage, flatpak).
 - **Design Premium**: Interface baseada em *Glassmorphism* limpa e intuitiva construída com React e Vite.
 - **Backend Autônomo**: Processamento via FastAPI no Python, empacotado internamente (Sidecar) via PyInstaller.
@@ -64,7 +65,7 @@ Todo o código original de interface (GUI) e infraestrutura presente neste repos
 ---
 
 ## ☕ Apoie o Projeto (Doações)
-Este projeto é desenvolvido e mantido de forma totalmente independente e de código aberto. Se o **Khat MarkItDown** economizou seu tempo e otimizou seu fluxo de trabalho, considere apoiar o desenvolvimento contínuo fazendo uma doação via **Pix**!
+Este projeto é desenvolvido e mantido de forma totalmente independente e de código aberto. Se o **Khat Mark And Json** economizou seu tempo e otimizou seu fluxo de trabalho, considere apoiar o desenvolvimento contínuo fazendo uma doação via **Pix**!
 
 **Chave Pix (Aleatória):**
 `0d323a66-4090-4e03-aa6d-889abfac5ee7`

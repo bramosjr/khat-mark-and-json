@@ -16,7 +16,8 @@ function startPythonBackend() {
   let cmd, args;
   
   if (isProd) {
-    const backendPath = path.join(process.resourcesPath, 'markitdown-backend', `markitdown-backend${ext}`);
+    const exeName = os.platform() === 'win32' ? 'markitdown-backend.exe' : 'markitdown-backend';
+    const backendPath = path.join(process.resourcesPath, exeName);
     cmd = backendPath;
     args = [];
     console.log('Iniciando o backend (produção) em:', backendPath);
@@ -75,15 +76,29 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(() => {
-  app.setAppUserModelId('com.bramosjr.markitdown');
-  startPythonBackend();
-  createWindow();
+const gotTheLock = app.requestSingleInstanceLock();
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
   });
-});
+
+  app.whenReady().then(() => {
+    app.setAppUserModelId('com.bramosjr.markitdown');
+    startPythonBackend();
+    createWindow();
+
+    app.on('activate', function () {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+  });
+}
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();

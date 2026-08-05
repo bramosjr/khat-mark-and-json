@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Copy, Download, Check } from 'lucide-react';
 import './MarkdownPreview.css';
 
-export function MarkdownPreview({ content }) {
+export function MarkdownPreview({ content, targetFormat = 'md' }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -12,11 +12,12 @@ export function MarkdownPreview({ content }) {
   };
 
   const handleDownload = () => {
-    const blob = new Blob([content], { type: 'text/markdown' });
+    const isJson = targetFormat === 'json';
+    const blob = new Blob([content], { type: isJson ? 'application/json' : 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'markitdown-export.md';
+    a.download = `markitdown-export.${isJson ? 'json' : 'md'}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -26,15 +27,15 @@ export function MarkdownPreview({ content }) {
   return (
     <div className="preview-container glass-panel animate-fade-in">
       <div className="preview-header">
-        <h3 className="preview-title">Markdown Gerado</h3>
+        <h3 className="preview-title">{targetFormat === 'json' ? 'JSON Gerado' : 'Markdown Gerado'}</h3>
         <div className="preview-actions">
-          <button onClick={handleCopy} className="action-btn" title="Copiar Markdown">
+          <button onClick={handleCopy} className="action-btn" title={targetFormat === 'json' ? 'Copiar JSON' : 'Copiar Markdown'}>
             {copied ? <Check size={18} className="text-success" /> : <Copy size={18} />}
             <span>{copied ? 'Copiado!' : 'Copiar'}</span>
           </button>
           <button onClick={handleDownload} className="action-btn primary" title="Baixar Arquivo">
             <Download size={18} />
-            <span>Baixar .md</span>
+            <span>Baixar .{targetFormat === 'json' ? 'json' : 'md'}</span>
           </button>
         </div>
       </div>

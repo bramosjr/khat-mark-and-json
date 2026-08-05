@@ -1,9 +1,13 @@
 fastapi
 uvicorn
-markitdown[all]
-openai
-pyinstaller
 python-multipart
+markitdown
+openai
+google-generativeai
+PyMuPDF
+pdfplumber
+camelot-py[cv]
+olefile
 pandas
-odfpy
 openpyxl
+odfpy

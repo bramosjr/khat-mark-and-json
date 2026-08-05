@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Upload } from 'lucide-react';
 import './Dropzone.css';
 
-export function Dropzone({ onFileDrop, isProcessing }) {
+export function Dropzone({ onFileDrop, isProcessing, selectedFile, elapsedTime, formatTime }) {
   const [isDragActive, setIsDragActive] = useState(false);
 
   const handleDrag = useCallback((e) => {
@@ -28,6 +28,7 @@ export function Dropzone({ onFileDrop, isProcessing }) {
   const handleChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       onFileDrop(e.target.files[0]);
+      e.target.value = null;
     }
   };
 
@@ -46,21 +47,33 @@ export function Dropzone({ onFileDrop, isProcessing }) {
           className="file-input" 
           onChange={handleChange} 
           disabled={isProcessing}
+          title=""
         />
         <label htmlFor="file-upload" className="dropzone-content">
           {isProcessing ? (
             <div className="processing-state">
               <div className="spinner"></div>
-              <p>Processando com IA...</p>
+              <p>Processando...</p>
+              {formatTime && <p style={{fontSize: '0.9rem', opacity: 0.8, marginTop: '5px'}}>{formatTime(elapsedTime)} decorridos</p>}
             </div>
           ) : (
             <>
               <div className="icon-container">
                 <Upload size={48} className="upload-icon" />
               </div>
-              <h3>Arraste e solte o arquivo aqui</h3>
-              <p>PDF, DOCX, XLSX, Imagens, Áudio ou HTML</p>
-              <span className="browse-btn">Procurar Arquivo</span>
+              {selectedFile ? (
+                <>
+                  <h3 style={{ marginBottom: '5px' }}>Arquivo selecionado:</h3>
+                  <p style={{ color: '#007bff', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '15px' }}>{selectedFile.name}</p>
+                  <span className="browse-btn">Trocar Arquivo</span>
+                </>
+              ) : (
+                <>
+                  <h3>Arraste e solte o arquivo aqui</h3>
+                  <p>PDF, DOCX, XLSX, ODT, Imagens, Áudio ou HTML</p>
+                  <span className="browse-btn">Procurar Arquivo</span>
+                </>
+              )}
             </>
           )}
         </label>

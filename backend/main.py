@@ -3,6 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from markitdown import MarkItDown
 import tempfile
 import os
+import sys
+
+# Suporte PyInstaller para localizar o Ghostscript embutido
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    os.environ["PATH"] = sys._MEIPASS + os.pathsep + os.environ.get("PATH", "")
+
 import traceback
 from typing import Optional
 
@@ -10,7 +16,7 @@ app = FastAPI(title="MarkItDown API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://0.0.0.0:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -23,6 +29,8 @@ async def convert_file(
     file: UploadFile = File(...),
     llm_api_key: Optional[str] = Form(None),
     llm_model: Optional[str] = Form("gpt-4o"),
+    target_format: Optional[str] = Form("md"),
+    llm_provider: Optional[str] = Form("openai"),
     authorization: Optional[str] = Header(None)
 ):
     expected_token = os.environ.get("KHAT_TOKEN")
@@ -53,6 +61,30 @@ async def convert_file(
             temp_file.write(content)
             temp_file_path = temp_file.name
             temp_files_to_delete.append(temp_file_path)
+            
+        if target_format == "json":
+            if suffix.lower() in ['.xlsx', '.xls', '.csv', '.ods']:
+                from core.offline_parsers import parse_tabular_to_json
+                return {"json_data": parse_tabular_to_json(temp_file_path)}
+            elif llm_api_key and llm_api_key.strip():
+                from core.llm_parsers import parse_with_llm
+                return {"json_data": parse_with_llm(temp_file_path, llm_provider, llm_api_key.strip())}
+            elif suffix.lower() == '.pdf':
+                from core.offline_parsers import parse_pdf_to_json_offline
+                return {"json_data": parse_pdf_to_json_offline(temp_file_path)}
+            else:
+                if suffix.lower() == '.odt':
+                    from odf.opendocument import load
+                    from odf import text, teletype
+                    doc = load(temp_file_path)
+                    allparas = doc.getElementsByType(text.P)
+                    extracted_text = ""
+                    for p in allparas:
+                        extracted_text += teletype.extractText(p) + "\n\n"
+                    return {"json_data": {"source_type": "document", "content": extracted_text.strip()}}
+                
+                result = md.convert(temp_file_path)
+                return {"json_data": {"source_type": "document", "content": result.text_content}}
             
         if suffix.lower() == '.ods':
             import pandas as pd

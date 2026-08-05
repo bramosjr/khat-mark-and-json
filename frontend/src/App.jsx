@@ -6,26 +6,70 @@ import './App.css'
 
 function App() {
   const [isProcessing, setIsProcessing] = useState(false)
+  const [elapsedTime, setElapsedTime] = useState(0)
   const [markdown, setMarkdown] = useState('')
   const [error, setError] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
   
   // Settings State
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('markitdown_api_key') || '')
   const [model, setModel] = useState(() => localStorage.getItem('markitdown_model') || 'gpt-4o')
+  
+  // New States for Khat Mark and Json
+  const [targetFormat, setTargetFormat] = useState('md')
+  const [llmProvider, setLlmProvider] = useState(() => localStorage.getItem('khat_llm_provider') || 'openai')
 
   useEffect(() => {
     localStorage.setItem('markitdown_api_key', apiKey)
     localStorage.setItem('markitdown_model', model)
-  }, [apiKey, model])
+    localStorage.setItem('khat_llm_provider', llmProvider)
+  }, [apiKey, model, llmProvider])
 
-  const handleFileDrop = async (file) => {
+  useEffect(() => {
+    let interval = null;
+    if (isProcessing) {
+      setElapsedTime(0);
+      interval = setInterval(() => {
+        setElapsedTime((prev) => prev + 1);
+      }, 1000);
+    } else {
+      setElapsedTime(0);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isProcessing]);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  const handleFileDrop = (file) => {
+    setSelectedFile(file)
+    setError('')
+    setMarkdown('')
+  }
+
+  const handleFormatChange = (format) => {
+    setTargetFormat(format)
+    setMarkdown('')
+    setError('')
+  }
+
+  const handleConvert = async () => {
+    if (!selectedFile) return;
+    
     setIsProcessing(true)
     setError('')
     setMarkdown('')
 
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', selectedFile)
+    formData.append('target_format', targetFormat)
+    formData.append('llm_provider', llmProvider)
     
     // Inject LLM parameters if available
     if (apiKey.trim()) {
@@ -52,7 +96,11 @@ function App() {
       }
 
       const data = await response.json()
-      setMarkdown(data.markdown)
+      if (targetFormat === 'json') {
+        setMarkdown("```json\n" + JSON.stringify(data.json_data, null, 2) + "\n```")
+      } else {
+        setMarkdown(data.markdown)
+      }
     } catch (err) {
       console.error(err)
       setError(err.message)
@@ -85,38 +133,91 @@ function App() {
               </p>
               
               <div className="form-group">
-                <label>OpenAI API Key</label>
+                <label>Provedor de IA (LLM)</label>
+                <select value={llmProvider} onChange={e => setLlmProvider(e.target.value)}>
+                  <option value="openai">OpenAI</option>
+                  <option value="gemini">Google Gemini</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>API Key</label>
                 <input 
                   type="password" 
-                  placeholder="sk-..." 
+                  placeholder={llmProvider === 'openai' ? "sk-..." : "AIza..."} 
                   value={apiKey} 
                   onChange={e => setApiKey(e.target.value)}
                 />
               </div>
 
-              <div className="form-group">
-                <label>Modelo</label>
-                <select value={model} onChange={e => setModel(e.target.value)}>
-                  <option value="gpt-4o">GPT-4o (Recomendado)</option>
-                  <option value="gpt-4o-mini">GPT-4o Mini</option>
-                  <option value="gpt-4-turbo">GPT-4 Turbo</option>
-                </select>
-              </div>
+              {llmProvider === 'openai' && (
+                <div className="form-group">
+                  <label>Modelo (Apenas OpenAI via MarkItDown)</label>
+                  <select value={model} onChange={e => setModel(e.target.value)}>
+                    <option value="gpt-4o">GPT-4o (Recomendado)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini</option>
+                    <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                  </select>
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
 
       <header className="header animate-fade-in">
-        <div className="title-container">
-          <h1>Khat MarkItDown</h1>
+        <div className="title-container" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '2rem', width: '100%', marginBottom: '1rem' }}>
+          <h1 style={{ margin: 0 }}>Khat Mark And Json</h1>
+          
+          <div className="format-toggle" style={{ display: 'flex', gap: '10px', background: 'rgba(255,255,255,0.1)', padding: '5px', borderRadius: '8px' }}>
+            <button 
+              className={`toggle-btn ${targetFormat === 'md' ? 'active' : ''}`}
+              onClick={() => handleFormatChange('md')}
+              style={{ padding: '5px 15px', borderRadius: '4px', border: 'none', background: targetFormat === 'md' ? '#007bff' : 'transparent', color: 'white', cursor: 'pointer' }}
+            >
+              Markdown
+            </button>
+            <button 
+              className={`toggle-btn ${targetFormat === 'json' ? 'active' : ''}`}
+              onClick={() => handleFormatChange('json')}
+              style={{ padding: '5px 15px', borderRadius: '4px', border: 'none', background: targetFormat === 'json' ? '#007bff' : 'transparent', color: 'white', cursor: 'pointer' }}
+            >
+              JSON
+            </button>
+          </div>
         </div>
-        <p>Converta qualquer documento (até mesmo imagens) em Markdown.</p>
+        <p>Converta qualquer documento em Markdown limpo ou JSON estruturado.</p>
       </header>
 
       <main className={`main-content ${markdown ? 'has-file' : ''}`}>
         <div className="left-panel">
-          <Dropzone onFileDrop={handleFileDrop} isProcessing={isProcessing} />
+          <Dropzone onFileDrop={handleFileDrop} isProcessing={isProcessing} selectedFile={selectedFile} elapsedTime={elapsedTime} formatTime={formatTime} />
+          
+          {selectedFile && (
+            <button 
+              onClick={handleConvert} 
+              disabled={isProcessing}
+              className="action-btn animate-fade-in"
+              style={{
+                marginTop: '1rem',
+                width: '100%',
+                padding: '1rem',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+                cursor: isProcessing ? 'not-allowed' : 'pointer',
+                opacity: isProcessing ? 0.7 : 1,
+                transition: 'all 0.2s ease',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+              }}
+            >
+              {isProcessing ? 'Processando...' : `Converter para ${targetFormat === 'md' ? 'Markdown' : 'JSON'}`}
+            </button>
+          )}
+
           {error && (
             <div className="error-message animate-fade-in">
               {error}
@@ -126,7 +227,7 @@ function App() {
 
         {markdown && (
           <div className="right-panel">
-            <MarkdownPreview content={markdown} />
+            <MarkdownPreview content={markdown} targetFormat={targetFormat} />
           </div>
         )}
       </main>
