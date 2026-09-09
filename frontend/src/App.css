@@ -146,3 +146,44 @@
   font-family: monospace;
   word-break: break-all;
 }
+
+.update-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.update-banner-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.update-banner-link:hover {
+  color: var(--accent-hover);
+}
+
+.update-banner-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+}
+
+.update-banner-close:hover {
+  color: var(--text-primary);
+}

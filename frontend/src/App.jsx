@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Settings, X } from 'lucide-react'
 import { Dropzone } from './components/Dropzone'
 import { MarkdownPreview } from './components/MarkdownPreview'
+import { UpdateBanner } from './components/UpdateBanner'
+import { useUpdateStatus } from './hooks/useUpdateStatus'
 import './App.css'
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
   const [markdown, setMarkdown] = useState('')
   const [error, setError] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
+  const [isBannerDismissed, setIsBannerDismissed] = useState(false)
+  const { versionInfo, updateStatus } = useUpdateStatus()
   
   // Settings State
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -111,6 +115,12 @@ function App() {
 
   return (
     <div className="app-container">
+      {updateStatus.updateAvailable && !isBannerDismissed && (
+        <UpdateBanner
+          latestVersion={updateStatus.latestVersion}
+          onDismiss={() => setIsBannerDismissed(true)}
+        />
+      )}
       <button 
         className="settings-toggle action-btn" 
         onClick={() => setIsSettingsOpen(true)}
