@@ -21,3 +21,5 @@ pyinstaller --name markitdown-backend \
             main.py
 
 echo "Build do backend concluído. O executável está na pasta 'dist/'"
+echo "Gerando version-info.json..."
+python build_version_info.py
