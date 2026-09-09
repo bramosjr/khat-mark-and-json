@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Settings, X } from 'lucide-react'
+import { Settings, X, Info } from 'lucide-react'
 import { Dropzone } from './components/Dropzone'
 import { MarkdownPreview } from './components/MarkdownPreview'
 import { UpdateBanner } from './components/UpdateBanner'
+import { AboutModal } from './components/AboutModal'
 import { useUpdateStatus } from './hooks/useUpdateStatus'
 import './App.css'
 
@@ -13,6 +14,7 @@ function App() {
   const [error, setError] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [isBannerDismissed, setIsBannerDismissed] = useState(false)
+  const [isAboutOpen, setIsAboutOpen] = useState(false)
   const { versionInfo, updateStatus } = useUpdateStatus()
   
   // Settings State
@@ -129,6 +131,14 @@ function App() {
         <Settings size={20} />
       </button>
 
+      <button
+        className="about-toggle action-btn"
+        onClick={() => setIsAboutOpen(true)}
+        title="Sobre"
+      >
+        <Info size={20} />
+      </button>
+
       {/* Modal de Configurações */}
       {isSettingsOpen && (
         <div className="modal-overlay animate-fade-in">
@@ -173,6 +183,14 @@ function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {isAboutOpen && (
+        <AboutModal
+          versionInfo={versionInfo}
+          updateStatus={updateStatus}
+          onClose={() => setIsAboutOpen(false)}
+        />
       )}
 
       <header className="header animate-fade-in">

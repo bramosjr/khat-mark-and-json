@@ -58,6 +58,21 @@
   z-index: 10;
 }
 
+.about-toggle {
+  position: absolute;
+  top: 2rem;
+  right: 5.75rem;
+  background: var(--bg-glass) !important;
+  border-radius: 50% !important;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  z-index: 10;
+}
+
 /* Modal */
 .modal-overlay {
   position: fixed;
@@ -186,4 +201,28 @@
 
 .update-banner-close:hover {
   color: var(--text-primary);
+}
+
+.update-banner-inline {
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.about-link:hover {
+  color: var(--accent-hover);
 }
