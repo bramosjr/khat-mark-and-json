@@ -51,6 +51,10 @@
         {
           "from": "../backend/dist/markitdown-backend",
           "to": "markitdown-backend"
+        },
+        {
+          "from": "../backend/dist/version-info.json",
+          "to": "version-info.json"
         }
       ]
     },
@@ -60,6 +64,10 @@
         {
           "from": "../backend/dist/markitdown-backend.exe",
           "to": "markitdown-backend.exe"
+        },
+        {
+          "from": "../backend/dist/version-info.json",
+          "to": "version-info.json"
         }
       ]
     },
@@ -69,6 +77,10 @@
         {
           "from": "../backend/dist/markitdown-backend",
           "to": "markitdown-backend"
+        },
+        {
+          "from": "../backend/dist/version-info.json",
+          "to": "version-info.json"
         }
       ]
     },

@@ -1,11 +1,41 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const os = require('os');
 const crypto = require('crypto');
+const { checkForUpdate, readVersionInfo } = require('./update-checker.cjs');
 
 const khatToken = crypto.randomBytes(32).toString('hex');
 ipcMain.handle('get-token', () => khatToken);
+
+let cachedVersionInfo = null;
+let latestUpdateStatus = { updateAvailable: false, latestVersion: null, currentVersion: null };
+
+function getVersionInfo() {
+  if (!cachedVersionInfo) {
+    cachedVersionInfo = readVersionInfo({
+      resourcesPath: process.resourcesPath,
+      isPackaged: app.isPackaged,
+      appDir: __dirname,
+    });
+  }
+  return cachedVersionInfo;
+}
+
+ipcMain.handle('get-version-info', () => getVersionInfo());
+ipcMain.handle('get-update-status', () => latestUpdateStatus);
+
+const ALLOWED_EXTERNAL_HOSTS = ['github.com', 'pypi.org'];
+ipcMain.handle('open-external', (_event, url) => {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === 'https:' && ALLOWED_EXTERNAL_HOSTS.includes(parsed.hostname)) {
+      shell.openExternal(url);
+    }
+  } catch (err) {
+    console.error('URL externa inválida:', url);
+  }
+});
 
 let mainWindow;
 let pythonProcess = null;
@@ -93,6 +123,18 @@ if (!gotTheLock) {
     app.setAppUserModelId('com.bramosjr.markitdown');
     startPythonBackend();
     createWindow();
+
+    checkForUpdate({
+      resourcesPath: process.resourcesPath,
+      isPackaged: app.isPackaged,
+      appDir: __dirname,
+      userDataPath: app.getPath('userData'),
+    }).then((status) => {
+      latestUpdateStatus = status;
+      if (status.updateAvailable && mainWindow) {
+        mainWindow.webContents.send('dep-update:available', status);
+      }
+    }).catch((err) => console.error('Falha ao checar atualização do MarkItDown:', err));
 
     app.on('activate', function () {
       if (BrowserWindow.getAllWindows().length === 0) createWindow();
