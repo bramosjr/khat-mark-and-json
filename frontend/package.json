@@ -1,7 +1,7 @@
 {
   "name": "khat-mark-and-json",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "productName": "Khat Mark And Json",
   "author": "Jorge Ramos <jrbramosjr1985@gmail.com>",
   "homepage": "https://github.com/bramosjr/khat-mark-and-json",
@@ -72,7 +72,7 @@
       ]
     },
     "linux": {
-      "target": ["deb", "rpm", "AppImage"],
+      "target": ["deb", "rpm", "AppImage", "pacman"],
       "extraResources": [
         {
           "from": "../backend/dist/markitdown-backend",
