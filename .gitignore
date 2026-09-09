@@ -20,3 +20,6 @@ Thumbs.db
 # Configurações Locais
 .env
 .env.local
+
+# Worktrees de isolamento de trabalho
+.worktrees/
