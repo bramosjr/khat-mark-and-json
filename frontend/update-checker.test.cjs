@@ -18,7 +18,7 @@ function makeTmpDir() {
 test('readVersionInfo retorna valores padrão quando o arquivo não existe', () => {
   const tmp = makeTmpDir();
   const info = readVersionInfo({ resourcesPath: tmp, isPackaged: true, appDir: tmp });
-  assert.deepEqual(info, { app_version: null, markitdown_version: null, built_at: null });
+  assert.deepEqual(info, { app_version: null, markitdown_version: null, built_at: null, libraries: {} });
 });
 
 test('readVersionInfo lê version-info.json em produção', () => {

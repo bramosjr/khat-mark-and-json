@@ -1,16 +1,29 @@
 :root {
-  --bg-primary: #0a0a0c;
-  --bg-secondary: #121216;
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-glass-hover: rgba(255, 255, 255, 0.08);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-active: #6366f1;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
-  --danger: #ef4444;
-  --success: #10b981;
+  /* Paleta base — Argila Escura (estrutura, 60%), Creme Linho (superfícies
+     de leitura, 30%), Marrom Café (tipografia sobre o creme), Verde Sage
+     (destaque de ação/aprovação, 10%). */
+  --clay: #5C2E20;
+  --linen: #FDFBF7;
+  --coffee: #2B1611;
+  --sage: #8CA186;
+  --sage-deep: #5F7357; /* sage escurecido — só p/ texto/ícone sobre fundo claro, onde o sage puro não teria contraste suficiente */
+
+  --bg-primary: var(--clay);
+  --bg-secondary: var(--linen);
+  --bg-glass: rgba(253, 251, 247, 0.07);
+  --bg-glass-hover: rgba(253, 251, 247, 0.14);
+  --border-glass: rgba(253, 251, 247, 0.18);
+  --border-active: var(--sage);
+
+  --text-primary: var(--linen);   /* texto sobre a argila (fundo escuro) */
+  --text-secondary: rgba(253, 251, 247, 0.68);
+  --text-on-light: var(--coffee); /* texto sobre o creme (fundo claro) */
+  --text-on-light-secondary: rgba(43, 22, 17, 0.65);
+
+  --accent: var(--sage);
+  --accent-hover: var(--sage-deep);
+  --danger: #A6402E;
+  --success: var(--sage);
 }
 
 * {

@@ -17,7 +17,7 @@
 .header h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  background: linear-gradient(135deg, var(--linen) 0%, var(--sage) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
@@ -41,6 +41,37 @@
   .main-content.has-file {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.convert-btn {
+  align-self: center;
+  padding: 0.75rem 2rem;
+  background: var(--accent);
+  color: var(--coffee);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.convert-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.convert-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .settings-toggle {
@@ -93,6 +124,18 @@
   max-width: 450px;
   padding: 2rem;
   background: var(--bg-secondary);
+  color: var(--text-on-light);
+  /* O modal é uma superfície clara (creme) dentro de um app de fundo
+     escuro — em vez de sobrescrever cada seletor filho, redefine aqui os
+     tokens de texto/destaque/borda; qualquer filho que use var(--text-
+     primary)/var(--text-secondary)/var(--accent)/var(--accent-hover)/
+     var(--border-glass) herda automaticamente a versão certa p/ fundo claro. */
+  --text-primary: var(--text-on-light);
+  --text-secondary: var(--text-on-light-secondary);
+  --accent: var(--sage-deep);
+  --accent-hover: #4A5A43;
+  --border-glass: rgba(43, 22, 17, 0.14);
+  --success: var(--sage-deep);
 }
 
 .modal-header {
@@ -139,7 +182,7 @@
 .form-group input, .form-group select {
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(43, 22, 17, 0.05);
   border: 1px solid var(--border-glass);
   color: var(--text-primary);
   font-family: inherit;
@@ -150,10 +193,16 @@
   border-color: var(--accent);
 }
 
+.form-hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
 .error-message {
   margin-top: 1rem;
   padding: 1rem;
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(166, 64, 46, 0.12);
   border: 1px solid var(--danger);
   border-radius: 8px;
   color: var(--danger);
@@ -168,7 +217,7 @@
   gap: 0.75rem;
   padding: 0.6rem 1rem;
   margin-bottom: 1rem;
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(140, 161, 134, 0.16);
   border: 1px solid var(--accent);
   border-radius: 8px;
   color: var(--text-primary);
@@ -206,7 +255,7 @@
 .update-banner-inline {
   padding: 0.5rem 0.75rem;
   margin: 0.5rem 0;
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(140, 161, 134, 0.16);
   border: 1px solid var(--accent);
   border-radius: 6px;
 }
@@ -225,4 +274,43 @@
 
 .about-link:hover {
   color: var(--accent-hover);
+}
+
+.about-libraries {
+  margin: 0.75rem 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-glass);
+}
+
+.about-libraries-title {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.about-libraries ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 1rem;
+  font-size: 0.85rem;
+}
+
+.about-libraries li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.about-libraries li span {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.about-library-link {
+  font-size: 0.85rem !important;
+  white-space: nowrap;
 }

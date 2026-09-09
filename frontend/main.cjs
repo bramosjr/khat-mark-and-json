@@ -95,7 +95,7 @@ function createWindow() {
       sandbox: false
     },
     autoHideMenuBar: true,
-    backgroundColor: '#0a0a0c', // Matches our CSS --bg-primary
+    backgroundColor: '#5C2E20', // Matches our CSS --bg-primary (Argila Escura)
     icon: path.join(__dirname, 'public', 'icone.png')
   });
 

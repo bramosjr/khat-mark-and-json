@@ -15,7 +15,7 @@ function readVersionInfo({ resourcesPath, isPackaged, appDir }) {
     const raw = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
-    return { app_version: null, markitdown_version: null, built_at: null };
+    return { app_version: null, markitdown_version: null, built_at: null, libraries: {} };
   }
 }
 

@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from core.output_wrapper import format_json_output
 
@@ -15,10 +16,15 @@ def parse_tabular_to_json(file_path: str) -> dict:
             # Assume CSV as fallback for tabular
             df = pd.read_csv(file_path)
             
-        # Converte valores vazios/NaN para None (que viram null no JSON)
-        df = df.where(pd.notnull(df), None)
-            
-        content = df.to_dict(orient="records")
+        # Converte para JSON e volta via df.to_json(), não df.to_dict(): em
+        # colunas numéricas, .where(pd.notnull(df), None) não remove o NaN
+        # de fato (o dtype float64 permanece e o None atribuído volta a virar
+        # NaN) — json.dumps rejeita NaN ("Out of range float values are not
+        # JSON compliant"), o que derrubava a resposta a meio da
+        # serialização (o cliente via "Failed to fetch", não um erro
+        # tratado). df.to_json() converte NaN para null corretamente,
+        # independente do dtype da coluna.
+        content = json.loads(df.to_json(orient="records", date_format="iso"))
         return format_json_output({"source_type": "tabular", "rows": len(df)}, content)
     except Exception as e:
         raise ValueError(f"Erro no parser tabular nativo: {str(e)}")
@@ -31,36 +37,45 @@ def parse_pdf_to_json_offline(file_path: str) -> dict:
     """
     import fitz  # PyMuPDF
     import pdfplumber
-    
-    doc = fitz.open(file_path)
-    content = []
-    
-    # Heurística simplificada de Blocos
-    for page_num, page in enumerate(doc):
-        # 1. Extração de blocos de texto nativos
-        blocks = page.get_text("blocks")
-        for block in blocks:
-            text = block[4].strip()
-            if text:
-                content.append({
-                    "type": "text", 
-                    "page": page_num + 1,
-                    "content": text
-                })
-        
-        # 2. Extração de tabelas (pdfplumber)
-        try:
-            with pdfplumber.open(file_path) as pdf:
-                plumber_page = pdf.pages[page_num]
-                tables = plumber_page.extract_tables()
-                for table in tables:
-                    if table:
-                        content.append({
-                            "type": "table",
-                            "page": page_num + 1,
-                            "content": table
-                        })
-        except Exception:
-            pass  # Se falhar em ler tabelas da página, segue adiante
 
-    return format_json_output({"source_type": "pdf_offline_heuristic", "pages": len(doc)}, content)
+    content = []
+
+    # fitz.open() e pdfplumber.open() abrem o arquivo inteiro na memória —
+    # abrir cada um só uma vez (fora do loop de páginas) e fechar sempre no
+    # finally, mesmo se algo no meio falhar. Antes, o pdfplumber era reaberto
+    # (relendo o PDF inteiro) uma vez POR PÁGINA, e nenhum dos dois arquivos
+    # era fechado ao final — o que também podia deixar o arquivo temporário
+    # travado (principalmente no Windows) até o processo inteiro terminar.
+    doc = fitz.open(file_path)
+    try:
+        with pdfplumber.open(file_path) as pdf:
+            # Heurística simplificada de Blocos
+            for page_num, page in enumerate(doc):
+                # 1. Extração de blocos de texto nativos
+                blocks = page.get_text("blocks")
+                for block in blocks:
+                    text = block[4].strip()
+                    if text:
+                        content.append({
+                            "type": "text",
+                            "page": page_num + 1,
+                            "content": text
+                        })
+
+                # 2. Extração de tabelas (pdfplumber)
+                try:
+                    plumber_page = pdf.pages[page_num]
+                    tables = plumber_page.extract_tables()
+                    for table in tables:
+                        if table:
+                            content.append({
+                                "type": "table",
+                                "page": page_num + 1,
+                                "content": table
+                            })
+                except Exception:
+                    pass  # Se falhar em ler tabelas da página, segue adiante
+
+        return format_json_output({"source_type": "pdf_offline_heuristic", "pages": len(doc)}, content)
+    finally:
+        doc.close()

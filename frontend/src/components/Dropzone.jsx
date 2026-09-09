@@ -64,7 +64,7 @@ export function Dropzone({ onFileDrop, isProcessing, selectedFile, elapsedTime, 
               {selectedFile ? (
                 <>
                   <h3 style={{ marginBottom: '5px' }}>Arquivo selecionado:</h3>
-                  <p style={{ color: '#007bff', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '15px' }}>{selectedFile.name}</p>
+                  <p style={{ color: 'var(--accent)', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '15px' }}>{selectedFile.name}</p>
                   <span className="browse-btn">Trocar Arquivo</span>
                 </>
               ) : (

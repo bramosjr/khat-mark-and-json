@@ -10,6 +10,22 @@ BACKEND_DIR = Path(__file__).resolve().parent
 FRONTEND_PACKAGE_JSON = BACKEND_DIR.parent / "frontend" / "package.json"
 OUTPUT_PATH = BACKEND_DIR / "dist" / "version-info.json"
 
+# Outras bibliotecas públicas usadas nos caminhos de conversão (além do
+# markitdown, já rastreado separadamente porque é o único com checagem de
+# atualização via PyPI) — exibidas na tela "Sobre" com nome e versão.
+OTHER_LIBRARIES = [
+    "openai",
+    "google-genai",
+    "anthropic",
+    "PyMuPDF",
+    "pdfplumber",
+    "camelot-py",
+    "olefile",
+    "pandas",
+    "openpyxl",
+    "odfpy",
+]
+
 
 def read_app_version(package_json_path: Path) -> str:
     with open(package_json_path, "r", encoding="utf-8") as f:
@@ -17,11 +33,28 @@ def read_app_version(package_json_path: Path) -> str:
     return data["version"]
 
 
-def generate_version_info(markitdown_version: str, app_version: str, built_at: str = None) -> dict:
+def collect_library_versions(names: list) -> dict:
+    """Retorna {nome: versão} para cada pacote instalado; None se ausente."""
+    versions = {}
+    for name in names:
+        try:
+            versions[name] = version(name)
+        except PackageNotFoundError:
+            versions[name] = None
+    return versions
+
+
+def generate_version_info(
+    markitdown_version: str,
+    app_version: str,
+    built_at: str = None,
+    libraries: dict = None,
+) -> dict:
     return {
         "app_version": app_version,
         "markitdown_version": markitdown_version,
         "built_at": built_at or datetime.now(timezone.utc).isoformat(),
+        "libraries": libraries or {},
     }
 
 
@@ -40,7 +73,8 @@ def main() -> None:
         sys.exit(1)
 
     app_version = read_app_version(FRONTEND_PACKAGE_JSON)
-    info = generate_version_info(markitdown_version, app_version)
+    libraries = collect_library_versions(OTHER_LIBRARIES)
+    info = generate_version_info(markitdown_version, app_version, libraries=libraries)
     write_version_info(info, OUTPUT_PATH)
     print(f"version-info.json gerado em {OUTPUT_PATH}: {info}")
 

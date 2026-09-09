@@ -26,11 +26,23 @@ function App() {
   const [targetFormat, setTargetFormat] = useState('md')
   const [llmProvider, setLlmProvider] = useState(() => localStorage.getItem('khat_llm_provider') || 'openai')
 
+  // Nome do modelo por provedor — cada provedor tem seu próprio catálogo de
+  // modelos, que muda de tempos em tempos; por isso é texto livre, nunca uma
+  // lista fixa no código para Gemini/Anthropic/compatível com OpenAI.
+  const [geminiModel, setGeminiModel] = useState(() => localStorage.getItem('khat_gemini_model') || '')
+  const [anthropicModel, setAnthropicModel] = useState(() => localStorage.getItem('khat_anthropic_model') || '')
+  const [compatibleModel, setCompatibleModel] = useState(() => localStorage.getItem('khat_compatible_model') || '')
+  const [compatibleBaseUrl, setCompatibleBaseUrl] = useState(() => localStorage.getItem('khat_compatible_base_url') || '')
+
   useEffect(() => {
     localStorage.setItem('markitdown_api_key', apiKey)
     localStorage.setItem('markitdown_model', model)
     localStorage.setItem('khat_llm_provider', llmProvider)
-  }, [apiKey, model, llmProvider])
+    localStorage.setItem('khat_gemini_model', geminiModel)
+    localStorage.setItem('khat_anthropic_model', anthropicModel)
+    localStorage.setItem('khat_compatible_model', compatibleModel)
+    localStorage.setItem('khat_compatible_base_url', compatibleBaseUrl)
+  }, [apiKey, model, llmProvider, geminiModel, anthropicModel, compatibleModel, compatibleBaseUrl])
 
   useEffect(() => {
     let interval = null;
@@ -76,11 +88,36 @@ function App() {
     formData.append('file', selectedFile)
     formData.append('target_format', targetFormat)
     formData.append('llm_provider', llmProvider)
-    
-    // Inject LLM parameters if available
+
+    // Inject LLM parameters if available. Cada provedor tem seu próprio
+    // campo de modelo (e o compatível com OpenAI também precisa da URL
+    // base) — nunca um nome de modelo fixo, porque os catálogos mudam.
     if (apiKey.trim()) {
       formData.append('llm_api_key', apiKey.trim())
-      formData.append('llm_model', model)
+
+      const modelByProvider = {
+        openai: model,
+        gemini: geminiModel,
+        anthropic: anthropicModel,
+        openai_compatible: compatibleModel,
+      }
+      const modelForRequest = (modelByProvider[llmProvider] || '').trim()
+
+      if (llmProvider !== 'openai' && !modelForRequest) {
+        setError('Informe o nome do modelo nas Configurações antes de converter.')
+        setIsProcessing(false)
+        return
+      }
+      if (llmProvider === 'openai_compatible' && !compatibleBaseUrl.trim()) {
+        setError('Informe a URL base do provedor compatível com OpenAI nas Configurações.')
+        setIsProcessing(false)
+        return
+      }
+
+      formData.append('llm_model', modelForRequest)
+      if (llmProvider === 'openai_compatible') {
+        formData.append('llm_base_url', compatibleBaseUrl.trim())
+      }
     }
 
     try {
@@ -149,36 +186,88 @@ function App() {
             </div>
             <div className="modal-body">
               <p className="modal-desc">
-                Para transcrever Imagens e obter descrições ricas, o MarkItDown suporta integração com LLMs. Insira sua chave de API da OpenAI abaixo:
+                Para transcrever imagens (via MarkItDown) e para converter documentos em JSON estruturado, o Khat Mark And Json suporta vários provedores de LLM. A descrição de imagens só funciona com OpenAI ou um provedor compatível com OpenAI; a conversão em JSON funciona com qualquer um dos provedores abaixo.
               </p>
-              
+
               <div className="form-group">
                 <label>Provedor de IA (LLM)</label>
                 <select value={llmProvider} onChange={e => setLlmProvider(e.target.value)}>
                   <option value="openai">OpenAI</option>
                   <option value="gemini">Google Gemini</option>
+                  <option value="anthropic">Anthropic (Claude)</option>
+                  <option value="openai_compatible">Compatível com OpenAI (Groq, Mistral, Ollama...)</option>
                 </select>
               </div>
 
               <div className="form-group">
                 <label>API Key</label>
-                <input 
-                  type="password" 
-                  placeholder={llmProvider === 'openai' ? "sk-..." : "AIza..."} 
-                  value={apiKey} 
+                <input
+                  type="password"
+                  placeholder={llmProvider === 'openai' ? "sk-..." : llmProvider === 'gemini' ? "AIza..." : llmProvider === 'anthropic' ? "sk-ant-..." : "chave do provedor (ou em branco, se não exigir)"}
+                  value={apiKey}
                   onChange={e => setApiKey(e.target.value)}
                 />
               </div>
 
               {llmProvider === 'openai' && (
                 <div className="form-group">
-                  <label>Modelo (Apenas OpenAI via MarkItDown)</label>
+                  <label>Modelo (OpenAI)</label>
                   <select value={model} onChange={e => setModel(e.target.value)}>
                     <option value="gpt-4o">GPT-4o (Recomendado)</option>
                     <option value="gpt-4o-mini">GPT-4o Mini</option>
                     <option value="gpt-4-turbo">GPT-4 Turbo</option>
                   </select>
                 </div>
+              )}
+
+              {llmProvider === 'gemini' && (
+                <div className="form-group">
+                  <label>Modelo (Gemini)</label>
+                  <input
+                    type="text"
+                    placeholder="ex.: gemini-3.8-flash"
+                    value={geminiModel}
+                    onChange={e => setGeminiModel(e.target.value)}
+                  />
+                  <p className="form-hint">Consulte o nome de modelo atual na documentação do Google — não há um valor padrão fixo, pois os modelos disponíveis mudam com frequência.</p>
+                </div>
+              )}
+
+              {llmProvider === 'anthropic' && (
+                <div className="form-group">
+                  <label>Modelo (Anthropic)</label>
+                  <input
+                    type="text"
+                    placeholder="ex.: claude-opus-5"
+                    value={anthropicModel}
+                    onChange={e => setAnthropicModel(e.target.value)}
+                  />
+                  <p className="form-hint">Consulte o nome de modelo atual na documentação da Anthropic.</p>
+                </div>
+              )}
+
+              {llmProvider === 'openai_compatible' && (
+                <>
+                  <div className="form-group">
+                    <label>URL base do provedor</label>
+                    <input
+                      type="text"
+                      placeholder="ex.: https://api.groq.com/openai/v1"
+                      value={compatibleBaseUrl}
+                      onChange={e => setCompatibleBaseUrl(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Modelo</label>
+                    <input
+                      type="text"
+                      placeholder="ex.: llama-3.3-70b-versatile"
+                      value={compatibleModel}
+                      onChange={e => setCompatibleModel(e.target.value)}
+                    />
+                    <p className="form-hint">Funciona com qualquer provedor que fale a API de chat completions da OpenAI (Groq, Mistral, DeepSeek, Together AI, OpenRouter, um Ollama local etc.).</p>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -197,18 +286,18 @@ function App() {
         <div className="title-container" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '2rem', width: '100%', marginBottom: '1rem' }}>
           <h1 style={{ margin: 0 }}>Khat Mark And Json</h1>
           
-          <div className="format-toggle" style={{ display: 'flex', gap: '10px', background: 'rgba(255,255,255,0.1)', padding: '5px', borderRadius: '8px' }}>
-            <button 
+          <div className="format-toggle" style={{ display: 'flex', gap: '10px', background: 'rgba(253,251,247,0.1)', padding: '5px', borderRadius: '8px' }}>
+            <button
               className={`toggle-btn ${targetFormat === 'md' ? 'active' : ''}`}
               onClick={() => handleFormatChange('md')}
-              style={{ padding: '5px 15px', borderRadius: '4px', border: 'none', background: targetFormat === 'md' ? '#007bff' : 'transparent', color: 'white', cursor: 'pointer' }}
+              style={{ padding: '5px 15px', borderRadius: '4px', border: 'none', background: targetFormat === 'md' ? 'var(--accent)' : 'transparent', color: targetFormat === 'md' ? 'var(--coffee)' : 'var(--text-primary)', cursor: 'pointer' }}
             >
               Markdown
             </button>
-            <button 
+            <button
               className={`toggle-btn ${targetFormat === 'json' ? 'active' : ''}`}
               onClick={() => handleFormatChange('json')}
-              style={{ padding: '5px 15px', borderRadius: '4px', border: 'none', background: targetFormat === 'json' ? '#007bff' : 'transparent', color: 'white', cursor: 'pointer' }}
+              style={{ padding: '5px 15px', borderRadius: '4px', border: 'none', background: targetFormat === 'json' ? 'var(--accent)' : 'transparent', color: targetFormat === 'json' ? 'var(--coffee)' : 'var(--text-primary)', cursor: 'pointer' }}
             >
               JSON
             </button>
@@ -222,25 +311,10 @@ function App() {
           <Dropzone onFileDrop={handleFileDrop} isProcessing={isProcessing} selectedFile={selectedFile} elapsedTime={elapsedTime} formatTime={formatTime} />
           
           {selectedFile && (
-            <button 
-              onClick={handleConvert} 
+            <button
+              onClick={handleConvert}
               disabled={isProcessing}
-              className="action-btn animate-fade-in"
-              style={{
-                marginTop: '1rem',
-                width: '100%',
-                padding: '1rem',
-                backgroundColor: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '1.1rem',
-                fontWeight: 'bold',
-                cursor: isProcessing ? 'not-allowed' : 'pointer',
-                opacity: isProcessing ? 0.7 : 1,
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-              }}
+              className="convert-btn animate-fade-in"
             >
               {isProcessing ? 'Processando...' : `Converter para ${targetFormat === 'md' ? 'Markdown' : 'JSON'}`}
             </button>

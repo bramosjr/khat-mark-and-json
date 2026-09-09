@@ -28,7 +28,8 @@ from fastapi import Header
 async def convert_file(
     file: UploadFile = File(...),
     llm_api_key: Optional[str] = Form(None),
-    llm_model: Optional[str] = Form("gpt-4o"),
+    llm_model: Optional[str] = Form(None),
+    llm_base_url: Optional[str] = Form(None),
     target_format: Optional[str] = Form("md"),
     llm_provider: Optional[str] = Form("openai"),
     authorization: Optional[str] = Header(None)
@@ -42,9 +43,20 @@ async def convert_file(
         raise HTTPException(status_code=400, detail="No file uploaded")
     
     try:
-        if llm_api_key and llm_api_key.strip():
+        provider_key = (llm_provider or "openai").strip().lower()
+        # A descrição de imagens/áudio embutida no MarkItDown espera um
+        # client no formato da API da OpenAI (llm_client.chat.completions...).
+        # Só openai e openai_compatible falam esse formato — para os demais
+        # provedores (ex.: Gemini, Anthropic), tentar usá-los aqui erraria
+        # com uma chave no formato errado contra a API da OpenAI. Nesses
+        # casos, a conversão de Markdown segue sem enriquecimento por LLM
+        # (o provedor escolhido continua valendo para a conversão em JSON).
+        if llm_api_key and llm_api_key.strip() and provider_key in ("openai", "openai_compatible"):
             from openai import OpenAI
-            client = OpenAI(api_key=llm_api_key.strip())
+            client_kwargs = {"api_key": llm_api_key.strip()}
+            if provider_key == "openai_compatible" and llm_base_url and llm_base_url.strip():
+                client_kwargs["base_url"] = llm_base_url.strip()
+            client = OpenAI(**client_kwargs)
             md = MarkItDown(llm_client=client, llm_model=llm_model)
         else:
             md = MarkItDown()
@@ -68,7 +80,10 @@ async def convert_file(
                 return {"json_data": parse_tabular_to_json(temp_file_path)}
             elif llm_api_key and llm_api_key.strip():
                 from core.llm_parsers import parse_with_llm
-                return {"json_data": parse_with_llm(temp_file_path, llm_provider, llm_api_key.strip())}
+                return {"json_data": parse_with_llm(
+                    temp_file_path, llm_provider, llm_api_key.strip(),
+                    model_name=llm_model, base_url=llm_base_url,
+                )}
             elif suffix.lower() == '.pdf':
                 from core.offline_parsers import parse_pdf_to_json_offline
                 return {"json_data": parse_pdf_to_json_offline(temp_file_path)}

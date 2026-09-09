@@ -3,7 +3,8 @@ uvicorn
 python-multipart
 markitdown==0.1.7
 openai
-google-generativeai
+google-genai
+anthropic
 PyMuPDF
 pdfplumber
 camelot-py[cv]
