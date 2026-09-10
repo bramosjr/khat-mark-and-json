@@ -3,10 +3,12 @@
   "private": true,
   "version": "0.1.0",
   "productName": "Khat Mark And Json",
+  "desktopName": "khat-mark-and-json.desktop",
   "author": "Jorge Ramos <jrbramosjr1985@gmail.com>",
   "homepage": "https://github.com/bramosjr/khat-mark-and-json",
   "repository": "https://github.com/bramosjr/khat-mark-and-json",
   "description": "MarkItDown GUI - A modern interface for document conversion",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -73,6 +75,9 @@
     },
     "linux": {
       "target": ["deb", "rpm", "AppImage", "pacman"],
+      "icon": "build/icons",
+      "syncDesktopName": true,
+      "category": "Utility",
       "extraResources": [
         {
           "from": "../backend/dist/markitdown-backend",

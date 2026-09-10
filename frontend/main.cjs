@@ -5,6 +5,9 @@ const os = require('os');
 const crypto = require('crypto');
 const { checkForUpdate, readVersionInfo } = require('./update-checker.cjs');
 
+app.name = 'khat-mark-and-json';
+app.setAppUserModelId('khat-mark-and-json');
+
 const khatToken = crypto.randomBytes(32).toString('hex');
 ipcMain.handle('get-token', () => khatToken);
 
@@ -87,7 +90,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    title: "MarkItDown",
+    title: "Khat Mark And Json",
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
