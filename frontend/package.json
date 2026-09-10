@@ -89,6 +89,12 @@
         }
       ]
     },
+    "deb": {
+      "fpm": [
+        "build/khat-mark-and-json.metainfo.xml=/usr/share/metainfo/khat-mark-and-json.metainfo.xml",
+        "build/copyright=/usr/share/doc/khat-mark-and-json/copyright"
+      ]
+    },
     "flatpak": {
       "runtimeVersion": "23.08"
     }

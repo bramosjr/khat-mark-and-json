@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>khat-mark-and-json.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Khat Mark And Json</name>
+  <summary>Conversor universal de documentos para Markdown e JSON</summary>
+  <description>
+    <p>MarkItDown GUI - Interface moderna e 100% offline para conversao universal de documentos em Markdown e JSON.</p>
+  </description>
+  <launchable type="desktop-id">khat-mark-and-json.desktop</launchable>
+  <url type="homepage">https://github.com/bramosjr/khat-mark-and-json</url>
+  <developer id="com.bramosjr">
+    <name>Jorge Ramos</name>
+  </developer>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="0.1.0" date="2026-09-09">
+      <description>
+        <p>Lançamento inicial oficial do Khat Mark And Json.</p>
+      </description>
+    </release>
+  </releases>
+</component>
