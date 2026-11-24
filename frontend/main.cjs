@@ -4,6 +4,9 @@ const { spawn } = require('child_process');
 const os = require('os');
 const crypto = require('crypto');
 const { checkForUpdate, readVersionInfo } = require('./update-checker.cjs');
+const {
+  checkForAppUpdate, readAppUpdateState, setAppUpdateEnabled, isAppUpdateEnabled,
+} = require('./app-update-checker.cjs');
 
 app.name = 'khat-mark-and-json';
 app.setAppUserModelId('khat-mark-and-json');
@@ -13,6 +16,9 @@ ipcMain.handle('get-token', () => khatToken);
 
 let cachedVersionInfo = null;
 let latestUpdateStatus = { updateAvailable: false, latestVersion: null, currentVersion: null };
+let latestAppUpdateStatus = {
+  updateAvailable: false, latestVersion: null, currentVersion: null, releaseUrl: null, enabled: true,
+};
 
 function getVersionInfo() {
   if (!cachedVersionInfo) {
@@ -27,6 +33,19 @@ function getVersionInfo() {
 
 ipcMain.handle('get-version-info', () => getVersionInfo());
 ipcMain.handle('get-update-status', () => latestUpdateStatus);
+ipcMain.handle('get-app-update-status', () => ({
+  ...latestAppUpdateStatus,
+  enabled: readAppUpdateState(app.getPath('userData')).enabled,
+}));
+ipcMain.handle('set-app-update-enabled', (_event, enabled) => {
+  const userDataPath = app.getPath('userData');
+  setAppUpdateEnabled(userDataPath, enabled === true);
+  const isEnabled = isAppUpdateEnabled(userDataPath);
+  if (!isEnabled) {
+    latestAppUpdateStatus = { ...latestAppUpdateStatus, updateAvailable: false, enabled: false };
+  }
+  return isEnabled;
+});
 
 const ALLOWED_EXTERNAL_HOSTS = ['github.com', 'pypi.org'];
 ipcMain.handle('open-external', (_event, url) => {
@@ -127,17 +146,31 @@ if (!gotTheLock) {
     startPythonBackend();
     createWindow();
 
-    checkForUpdate({
-      resourcesPath: process.resourcesPath,
-      isPackaged: app.isPackaged,
-      appDir: __dirname,
-      userDataPath: app.getPath('userData'),
-    }).then((status) => {
-      latestUpdateStatus = status;
-      if (status.updateAvailable && mainWindow) {
-        mainWindow.webContents.send('dep-update:available', status);
-      }
-    }).catch((err) => console.error('Falha ao checar atualização do MarkItDown:', err));
+    const userDataPath = app.getPath('userData');
+    // Uma única preferência (opt-out) governa todas as checagens que usam a rede.
+    if (isAppUpdateEnabled(userDataPath)) {
+      checkForUpdate({
+        resourcesPath: process.resourcesPath,
+        isPackaged: app.isPackaged,
+        appDir: __dirname,
+        userDataPath,
+      }).then((status) => {
+        latestUpdateStatus = status;
+        if (status.updateAvailable && mainWindow) {
+          mainWindow.webContents.send('dep-update:available', status);
+        }
+      }).catch((err) => console.error('Falha ao checar atualização do MarkItDown:', err));
+
+      checkForAppUpdate({
+        appVersion: getVersionInfo().app_version || app.getVersion(),
+        userDataPath,
+      }).then((status) => {
+        latestAppUpdateStatus = status;
+        if (status.updateAvailable && mainWindow) {
+          mainWindow.webContents.send('app-update:available', status);
+        }
+      }).catch((err) => console.error('Falha ao checar atualização do app:', err));
+    }
 
     app.on('activate', function () {
       if (BrowserWindow.getAllWindows().length === 0) createWindow();

@@ -27,7 +27,7 @@ const LIBRARY_ORDER = [
   'pdfplumber', 'camelot-py', 'olefile', 'pandas', 'openpyxl', 'odfpy',
 ]
 
-export function AboutModal({ versionInfo, updateStatus, onClose }) {
+export function AboutModal({ versionInfo, updateStatus, appUpdateStatus, onToggleAppUpdate, onClose }) {
   const openLink = (url) => {
     if (window.electronAPI?.openExternal) {
       window.electronAPI.openExternal(url)
@@ -51,6 +51,14 @@ export function AboutModal({ versionInfo, updateStatus, onClose }) {
         </div>
         <div className="modal-body">
           <p><strong>Khat Mark And Json</strong> — versão {versionInfo.app_version || 'desconhecida'}</p>
+          {appUpdateStatus?.updateAvailable && (
+            <p className="update-banner-inline">
+              Nova versão do Khat Mark And Json disponível: {appUpdateStatus.latestVersion}{' '}
+              <button className="about-link" onClick={() => openLink(appUpdateStatus.releaseUrl)}>
+                Baixar <ExternalLink size={12} />
+              </button>
+            </p>
+          )}
           {updateStatus.updateAvailable && (
             <p className="update-banner-inline">
               Nova versão do MarkItDown disponível: {updateStatus.latestVersion}
@@ -70,6 +78,16 @@ export function AboutModal({ versionInfo, updateStatus, onClose }) {
                 ))}
               </ul>
             </div>
+          )}
+          {appUpdateStatus && onToggleAppUpdate && (
+            <label className="about-update-toggle">
+              <input
+                type="checkbox"
+                checked={appUpdateStatus.enabled}
+                onChange={(e) => onToggleAppUpdate(e.target.checked)}
+              />
+              Verificar atualizações automaticamente (1x por semana, requer internet)
+            </label>
           )}
           <p>
             <button className="about-link" onClick={() => openLink('https://github.com/bramosjr/khat-mark-and-json')}>

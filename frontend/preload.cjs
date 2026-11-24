@@ -8,6 +8,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getToken: () => ipcRenderer.invoke('get-token'),
   getVersionInfo: () => ipcRenderer.invoke('get-version-info'),
   getUpdateStatus: () => ipcRenderer.invoke('get-update-status'),
+  getAppUpdateStatus: () => ipcRenderer.invoke('get-app-update-status'),
+  setAppUpdateEnabled: (enabled) => ipcRenderer.invoke('set-app-update-enabled', enabled),
+  onAppUpdateAvailable: (callback) => {
+    const listener = (_event, payload) => callback(payload);
+    ipcRenderer.on('app-update:available', listener);
+    return () => ipcRenderer.removeListener('app-update:available', listener);
+  },
   openExternal: (url) => ipcRenderer.invoke('open-external', url),
   onUpdateAvailable: (callback) => {
     const listener = (_event, payload) => callback(payload);

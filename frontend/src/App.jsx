@@ -5,6 +5,8 @@ import { MarkdownPreview } from './components/MarkdownPreview'
 import { UpdateBanner } from './components/UpdateBanner'
 import { AboutModal } from './components/AboutModal'
 import { useUpdateStatus } from './hooks/useUpdateStatus'
+import { AppUpdateBanner } from './components/AppUpdateBanner'
+import { useAppUpdateStatus } from './hooks/useAppUpdateStatus'
 import './App.css'
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
   const [isBannerDismissed, setIsBannerDismissed] = useState(false)
   const [isAboutOpen, setIsAboutOpen] = useState(false)
   const { versionInfo, updateStatus } = useUpdateStatus()
+  const { appUpdateStatus, setEnabled: setAppUpdateEnabled } = useAppUpdateStatus()
+  const [isAppBannerDismissed, setIsAppBannerDismissed] = useState(false)
   
   // Settings State
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -154,6 +158,14 @@ function App() {
 
   return (
     <div className="app-container">
+      {appUpdateStatus.updateAvailable && !isAppBannerDismissed && (
+        <AppUpdateBanner
+          latestVersion={appUpdateStatus.latestVersion}
+          currentVersion={appUpdateStatus.currentVersion}
+          releaseUrl={appUpdateStatus.releaseUrl}
+          onDismiss={() => setIsAppBannerDismissed(true)}
+        />
+      )}
       {updateStatus.updateAvailable && !isBannerDismissed && (
         <UpdateBanner
           latestVersion={updateStatus.latestVersion}
@@ -278,6 +290,8 @@ function App() {
         <AboutModal
           versionInfo={versionInfo}
           updateStatus={updateStatus}
+          appUpdateStatus={appUpdateStatus}
+          onToggleAppUpdate={setAppUpdateEnabled}
           onClose={() => setIsAboutOpen(false)}
         />
       )}

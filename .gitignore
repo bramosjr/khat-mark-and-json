@@ -23,3 +23,12 @@ Thumbs.db
 
 # Worktrees de isolamento de trabalho
 .worktrees/
+
+# Binários de build / ferramentas de terceiros (ficam só no disco local)
+backend/gs
+backend/gs_10.07.1_amd64_snap/
+backend/winetricks
+backend/gs_snap.tgz
+backend/gsdll64.dll
+backend/gswin64c.exe
+backend/test.xlsx
