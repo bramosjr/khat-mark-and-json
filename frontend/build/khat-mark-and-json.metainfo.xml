@@ -15,6 +15,11 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.1.1" date="2026-11-24">
+      <description>
+        <p>Aviso de nova versão do aplicativo (com opção de desligar), CLI e servidor MCP para agentes de IA, e limpeza do repositório.</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-09-09">
       <description>
         <p>Lançamento inicial oficial do Khat Mark And Json.</p>
