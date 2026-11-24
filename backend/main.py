@@ -1,6 +1,15 @@
+import sys
+
+# Com argumentos, o backend vira CLI / servidor MCP (headless, sem HTTP).
+# Sem argumentos (caso do Electron), sobe o servidor HTTP como sempre.
+# O despacho vem antes das importações pesadas (fastapi, markitdown...).
+if __name__ == "__main__" and len(sys.argv) > 1:
+    from cli import main as _cli_main
+    sys.exit(_cli_main(sys.argv[1:]))
+
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from markitdown import MarkItDown
+from core.converter import build_markitdown, convert_file as core_convert_file
 import tempfile
 import os
 import sys
@@ -43,23 +52,7 @@ async def convert_file(
         raise HTTPException(status_code=400, detail="No file uploaded")
     
     try:
-        provider_key = (llm_provider or "openai").strip().lower()
-        # A descrição de imagens/áudio embutida no MarkItDown espera um
-        # client no formato da API da OpenAI (llm_client.chat.completions...).
-        # Só openai e openai_compatible falam esse formato — para os demais
-        # provedores (ex.: Gemini, Anthropic), tentar usá-los aqui erraria
-        # com uma chave no formato errado contra a API da OpenAI. Nesses
-        # casos, a conversão de Markdown segue sem enriquecimento por LLM
-        # (o provedor escolhido continua valendo para a conversão em JSON).
-        if llm_api_key and llm_api_key.strip() and provider_key in ("openai", "openai_compatible"):
-            from openai import OpenAI
-            client_kwargs = {"api_key": llm_api_key.strip()}
-            if provider_key == "openai_compatible" and llm_base_url and llm_base_url.strip():
-                client_kwargs["base_url"] = llm_base_url.strip()
-            client = OpenAI(**client_kwargs)
-            md = MarkItDown(llm_client=client, llm_model=llm_model)
-        else:
-            md = MarkItDown()
+        md = build_markitdown(llm_provider, llm_api_key, llm_model, llm_base_url)
     except Exception as e:
         error_details = traceback.format_exc()
         print("ERROR INITIALIZING MARKITDOWN:\n", error_details)
@@ -74,57 +67,12 @@ async def convert_file(
             temp_file_path = temp_file.name
             temp_files_to_delete.append(temp_file_path)
             
-        if target_format == "json":
-            if suffix.lower() in ['.xlsx', '.xls', '.csv', '.ods']:
-                from core.offline_parsers import parse_tabular_to_json
-                return {"json_data": parse_tabular_to_json(temp_file_path)}
-            elif llm_api_key and llm_api_key.strip():
-                from core.llm_parsers import parse_with_llm
-                return {"json_data": parse_with_llm(
-                    temp_file_path, llm_provider, llm_api_key.strip(),
-                    model_name=llm_model, base_url=llm_base_url,
-                )}
-            elif suffix.lower() == '.pdf':
-                from core.offline_parsers import parse_pdf_to_json_offline
-                return {"json_data": parse_pdf_to_json_offline(temp_file_path)}
-            else:
-                if suffix.lower() == '.odt':
-                    from odf.opendocument import load
-                    from odf import text, teletype
-                    doc = load(temp_file_path)
-                    allparas = doc.getElementsByType(text.P)
-                    extracted_text = ""
-                    for p in allparas:
-                        extracted_text += teletype.extractText(p) + "\n\n"
-                    return {"json_data": {"source_type": "document", "content": extracted_text.strip()}}
-                
-                result = md.convert(temp_file_path)
-                return {"json_data": {"source_type": "document", "content": result.text_content}}
-            
-        if suffix.lower() == '.ods':
-            import pandas as pd
-            dfs = pd.read_excel(temp_file_path, engine="odf", sheet_name=None)
-            xlsx_path = temp_file_path + ".xlsx"
-            temp_files_to_delete.append(xlsx_path)
-            with pd.ExcelWriter(xlsx_path, engine='openpyxl') as writer:
-                for sheet_name, df in dfs.items():
-                    df.to_excel(writer, sheet_name=sheet_name, index=False)
-            temp_file_path = xlsx_path
-            
-        elif suffix.lower() == '.odt':
-            from odf.opendocument import load
-            from odf import text, teletype
-            doc = load(temp_file_path)
-            allparas = doc.getElementsByType(text.P)
-            extracted_text = ""
-            for p in allparas:
-                extracted_text += teletype.extractText(p) + "\n\n"
-            return {"markdown": extracted_text.strip()}
-        
-        result = md.convert(temp_file_path)
-        
-        return {"markdown": result.text_content}
-        
+        return core_convert_file(
+            temp_file_path, target_format, md,
+            llm_provider=llm_provider, llm_api_key=llm_api_key,
+            llm_model=llm_model, llm_base_url=llm_base_url,
+        )
+
     except Exception as e:
         error_details = traceback.format_exc()
         print("ERROR IN CONVERSION:\n", error_details)
