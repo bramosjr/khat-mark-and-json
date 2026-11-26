@@ -1,7 +1,7 @@
 """Cada extensão aceita pela CLI precisa converter de verdade (issue #3).
 
-As amostras são geradas em tempo de teste; nenhum binário é versionado.
-.msg fica de fora: não há como gerar uma amostra sem ferramenta externa.
+As amostras daqui são geradas em tempo de teste. A exceção é o .msg, que não
+dá para gerar: ele tem amostra versionada e teste próprio em test_msg.py.
 """
 import io
 import json
