@@ -7,6 +7,7 @@ import { AboutModal } from './components/AboutModal'
 import { useUpdateStatus } from './hooks/useUpdateStatus'
 import { AppUpdateBanner } from './components/AppUpdateBanner'
 import { useAppUpdateStatus } from './hooks/useAppUpdateStatus'
+import { formatResult } from './utils/formatResult'
 import './App.css'
 
 function App() {
@@ -143,11 +144,7 @@ function App() {
       }
 
       const data = await response.json()
-      if (targetFormat === 'json') {
-        setMarkdown("```json\n" + JSON.stringify(data.json_data, null, 2) + "\n```")
-      } else {
-        setMarkdown(data.markdown)
-      }
+      setMarkdown(formatResult(targetFormat, data))
     } catch (err) {
       console.error(err)
       setError(err.message)
@@ -158,20 +155,22 @@ function App() {
 
   return (
     <div className="app-container">
-      {appUpdateStatus.updateAvailable && !isAppBannerDismissed && (
-        <AppUpdateBanner
-          latestVersion={appUpdateStatus.latestVersion}
-          currentVersion={appUpdateStatus.currentVersion}
-          releaseUrl={appUpdateStatus.releaseUrl}
-          onDismiss={() => setIsAppBannerDismissed(true)}
-        />
-      )}
-      {updateStatus.updateAvailable && !isBannerDismissed && (
-        <UpdateBanner
-          latestVersion={updateStatus.latestVersion}
-          onDismiss={() => setIsBannerDismissed(true)}
-        />
-      )}
+      <div className="update-banners">
+        {appUpdateStatus.updateAvailable && !isAppBannerDismissed && (
+          <AppUpdateBanner
+            latestVersion={appUpdateStatus.latestVersion}
+            currentVersion={appUpdateStatus.currentVersion}
+            releaseUrl={appUpdateStatus.releaseUrl}
+            onDismiss={() => setIsAppBannerDismissed(true)}
+          />
+        )}
+        {updateStatus.updateAvailable && !isBannerDismissed && (
+          <UpdateBanner
+            latestVersion={updateStatus.latestVersion}
+            onDismiss={() => setIsBannerDismissed(true)}
+          />
+        )}
+      </div>
       <button 
         className="settings-toggle action-btn" 
         onClick={() => setIsSettingsOpen(true)}

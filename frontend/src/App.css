@@ -211,6 +211,13 @@
   word-break: break-all;
 }
 
+/* Reserva à direita a largura dos botões "Sobre" e "Configurações", que têm
+   posição fixa no canto: o mais à esquerda começa a 8.75rem da borda do
+   container, que já tem 2rem de padding. Sem faixa, a caixa não ocupa altura. */
+.update-banners {
+  margin-right: 7.5rem;
+}
+
 .update-banner {
   display: flex;
   align-items: center;
