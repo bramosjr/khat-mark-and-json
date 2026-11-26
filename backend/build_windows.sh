@@ -23,6 +23,9 @@ WINEDLLOVERRIDES="ucrtbase=n,b" wine pyinstaller --name markitdown-backend \
             --add-binary "gsdll64.dll;." \
             --collect-all "magika" \
             --collect-all "markitdown" \
+            --collect-all "mammoth" \
+            --collect-all "pptx" \
+            --hidden-import "xlrd" \
             --hidden-import "uvicorn" \
             --hidden-import "fastapi" \
             --hidden-import "pandas" \

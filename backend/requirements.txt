@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 python-multipart
-markitdown==0.1.7
+markitdown[docx,pptx,xls,xlsx,pdf,outlook]==0.1.7
 openai
 google-genai
 anthropic

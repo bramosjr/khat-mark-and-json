@@ -18,6 +18,9 @@ pyinstaller --name markitdown-backend \
             --hidden-import multipart \
             --collect-all magika \
             --collect-all markitdown \
+            --collect-all mammoth \
+            --collect-all pptx \
+            --hidden-import xlrd \
             main.py
 
 echo "Build do backend concluído. O executável está na pasta 'dist/'"

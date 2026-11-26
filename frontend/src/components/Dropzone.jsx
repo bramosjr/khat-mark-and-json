@@ -70,7 +70,7 @@ export function Dropzone({ onFileDrop, isProcessing, selectedFile, elapsedTime, 
               ) : (
                 <>
                   <h3>Arraste e solte o arquivo aqui</h3>
-                  <p>PDF, DOCX, XLSX, ODT, Imagens, Áudio ou HTML</p>
+                  <p>PDF, DOCX, XLSX, ODT, Imagens ou HTML</p>
                   <span className="browse-btn">Procurar Arquivo</span>
                 </>
               )}
