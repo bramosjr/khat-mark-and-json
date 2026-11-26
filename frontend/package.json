@@ -1,14 +1,14 @@
 {
   "name": "khat-mark-and-json",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "productName": "Khat Mark And Json",
   "desktopName": "khat-mark-and-json.desktop",
   "author": "Jorge Ramos <jrbramosjr1985@gmail.com>",
   "homepage": "https://github.com/bramosjr/khat-mark-and-json",
   "repository": "https://github.com/bramosjr/khat-mark-and-json",
   "description": "MarkItDown GUI - A modern interface for document conversion",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -43,6 +43,13 @@
     "appId": "com.bramosjr.markitdown",
     "productName": "Khat Mark And Json",
     "icon": "public/icone.png",
+    "files": [
+      "*.cjs",
+      "!*.test.cjs",
+      "dist/**/*",
+      "public/icone.png",
+      "package.json"
+    ],
     "directories": {
       "output": "release"
     },
@@ -57,6 +64,22 @@
         {
           "from": "../backend/dist/version-info.json",
           "to": "version-info.json"
+        },
+        {
+          "from": "../LICENSE",
+          "to": "licenses/LICENSE-MIT.txt"
+        },
+        {
+          "from": "../licenses/AGPL-3.0.txt",
+          "to": "licenses/AGPL-3.0.txt"
+        },
+        {
+          "from": "../NOTICE.md",
+          "to": "licenses/NOTICE.md"
+        },
+        {
+          "from": "../backend/dist/LICENCAS-TERCEIROS.txt",
+          "to": "licenses/LICENCAS-TERCEIROS.txt"
         }
       ]
     },
@@ -70,6 +93,22 @@
         {
           "from": "../backend/dist/version-info.json",
           "to": "version-info.json"
+        },
+        {
+          "from": "../LICENSE",
+          "to": "licenses/LICENSE-MIT.txt"
+        },
+        {
+          "from": "../licenses/AGPL-3.0.txt",
+          "to": "licenses/AGPL-3.0.txt"
+        },
+        {
+          "from": "../NOTICE.md",
+          "to": "licenses/NOTICE.md"
+        },
+        {
+          "from": "../backend/dist/LICENCAS-TERCEIROS.txt",
+          "to": "licenses/LICENCAS-TERCEIROS.txt"
         }
       ]
     },
@@ -86,6 +125,22 @@
         {
           "from": "../backend/dist/version-info.json",
           "to": "version-info.json"
+        },
+        {
+          "from": "../LICENSE",
+          "to": "licenses/LICENSE-MIT.txt"
+        },
+        {
+          "from": "../licenses/AGPL-3.0.txt",
+          "to": "licenses/AGPL-3.0.txt"
+        },
+        {
+          "from": "../NOTICE.md",
+          "to": "licenses/NOTICE.md"
+        },
+        {
+          "from": "../backend/dist/LICENCAS-TERCEIROS.txt",
+          "to": "licenses/LICENCAS-TERCEIROS.txt"
         }
       ]
     },

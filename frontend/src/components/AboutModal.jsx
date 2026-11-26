@@ -89,6 +89,10 @@ export function AboutModal({ versionInfo, updateStatus, appUpdateStatus, onToggl
             </label>
           )}
           <p>
+            Este pacote é distribuído sob a licença AGPL-3.0, porque inclui o PyMuPDF. O código do projeto é MIT.
+            O código-fonte está no repositório abaixo.
+          </p>
+          <p>
             <button className="about-link" onClick={() => openLink('https://github.com/bramosjr/khat-mark-and-json')}>
               Repositório do Khat Mark And Json <ExternalLink size={14} />
             </button>

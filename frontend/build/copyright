@@ -2,6 +2,12 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: khat-mark-and-json
 Upstream-Contact: Jorge Ramos <jrbramosjr1985@gmail.com>
 Source: https://github.com/bramosjr/khat-mark-and-json
+Comment:
+ O codigo deste projeto e distribuido sob MIT. Este pacote binario inclui o
+ PyMuPDF (AGPL) e, como um todo, e distribuido sob AGPL-3.0-only. O texto da
+ AGPL, o aviso e as licencas de terceiros estao na pasta resources/licenses da
+ instalacao. O codigo-fonte de cada versao esta na tag correspondente do
+ endereco em Source.
 
 Files: *
 Copyright: 2026 Jorge Ramos <jrbramosjr1985@gmail.com>

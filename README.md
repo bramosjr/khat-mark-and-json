@@ -114,6 +114,9 @@ Todo o código original de interface (GUI) e infraestrutura presente neste repos
 
 ---
 
+## Licença
+O código deste projeto é **MIT** ([LICENSE](LICENSE)). Os **pacotes e executáveis** incluem o PyMuPDF (AGPL) e, como um todo, são distribuídos sob **AGPL-3.0-only** ([texto](licenses/AGPL-3.0.txt)). Detalhes e licenças de terceiros em [NOTICE.md](NOTICE.md).
+
 ## ☕ Apoie o Projeto (Doações)
 Este projeto é desenvolvido e mantido de forma totalmente independente e de código aberto. Se o **Khat Mark And Json** economizou seu tempo e otimizou seu fluxo de trabalho, considere apoiar o desenvolvimento contínuo fazendo uma doação via **Pix**!
 

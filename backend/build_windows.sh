@@ -30,5 +30,6 @@ WINEDLLOVERRIDES="ucrtbase=n,b" wine pyinstaller --name markitdown-backend \
 
 echo "Gerando version-info.json..."
 wine python build_version_info.py
+wine python gera_licencas.py
 
 echo "Build Windows Finalizado! Executável gerado na pasta dist/"

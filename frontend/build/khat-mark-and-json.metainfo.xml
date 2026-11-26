@@ -2,7 +2,7 @@
 <component type="desktop-application">
   <id>khat-mark-and-json.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>MIT</project_license>
+  <project_license>AGPL-3.0-only</project_license>
   <name>Khat Mark And Json</name>
   <summary>Conversor universal de documentos para Markdown e JSON</summary>
   <description>
@@ -15,6 +15,11 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.1.2" date="2026-11-26">
+      <description>
+        <p>Corrige a conversão de .docx, .pptx e .xls, o arquivo .json gerado pela interface e a leitura de CSV. MarkItDown 0.1.9. O pacote passa a ser distribuído sob AGPL-3.0.</p>
+      </description>
+    </release>
     <release version="0.1.1" date="2026-11-24">
       <description>
         <p>Aviso de nova versão do aplicativo (com opção de desligar), CLI e servidor MCP para agentes de IA, e limpeza do repositório.</p>

@@ -32,5 +32,6 @@ pyinstaller --name markitdown-backend \
 
 echo "Gerando version-info.json..."
 python build_version_info.py
+python gera_licencas.py
 
 echo "Build Linux Finalizado! Executável gerado na pasta dist/markitdown-backend"
