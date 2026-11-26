@@ -169,6 +169,14 @@ class Automation:
         origem = self._validar_entrada(arquivo)
         destino = self._validar_saida(saida, origem, sobrescrever) if saida is not None else None
 
+        from core.converter import dependencias_ausentes
+        ausentes = dependencias_ausentes(origem.suffix.lower(), formato)
+        if ausentes:
+            raise AutomationError(
+                "DEPENDENCIA_AUSENTE",
+                f"não é possível converter '{origem.suffix.lower()}' para {formato}: "
+                f"módulos ausentes nesta instalação: {', '.join(ausentes)}")
+
         if dry_run:
             return {"ok": True, "dry_run": True, "arquivo": str(origem), "formato": formato,
                     "saida": str(destino) if destino else None,

@@ -71,11 +71,11 @@ markitdown-backend describe        # (ou --schema) lista comandos, ferramentas M
 
 - Sem `--saida`, o conteúdo vai para o stdout. Markdown acima de `--max-chars` (padrão 200000) é truncado, com aviso no stderr; JSON acima desse limite exige `--saida`.
 - `--saida` recusa sobrescrever um arquivo existente, salvo com `--sobrescrever`.
-- `--dry-run` valida tudo (caminhos, extensão, tamanho, confinamento) sem converter nem gravar.
+- `--dry-run` valida tudo (caminhos, extensão, tamanho, confinamento, dependências do conversor) sem converter nem gravar.
 - Com `--json`, a saída e os erros são JSON: `{"erro": "...", "codigo": "..."}`.
 - Extensões aceitas: `.pdf .docx .pptx .xlsx .xls .csv .ods .odt .html .htm .xml .json .txt .md .epub .msg` (`.zip` fica de fora por segurança). Limite de entrada: 50 MB (`--max-input-mb`).
 
-**Códigos de saída:** `0` sucesso · `1` erro de negócio (campo `codigo`: `ENTRADA_INVALIDA`, `ARQUIVO_NAO_ENCONTRADO`, `EXTENSAO_NAO_SUPORTADA`, `ARQUIVO_GRANDE`, `CAMINHO_RECUSADO`, `SAIDA_EXISTE`, `CONTEUDO_GRANDE`, `CONVERSAO_FALHOU`, `ERRO_DE_ESCRITA`) · `2` uso incorreto ou argumento inválido.
+**Códigos de saída:** `0` sucesso · `1` erro de negócio (campo `codigo`: `ENTRADA_INVALIDA`, `ARQUIVO_NAO_ENCONTRADO`, `EXTENSAO_NAO_SUPORTADA`, `ARQUIVO_GRANDE`, `CAMINHO_RECUSADO`, `SAIDA_EXISTE`, `CONTEUDO_GRANDE`, `CONVERSAO_FALHOU`, `ERRO_DE_ESCRITA`, `DEPENDENCIA_AUSENTE`) · `2` uso incorreto ou argumento inválido.
 
 ### Servidor MCP (stdio, JSON-RPC 2.0)
 
