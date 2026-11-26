@@ -1,6 +1,46 @@
+import csv
+import io
 import json
 import pandas as pd
+from core.codificacao_csv import decodificar_csv
 from core.output_wrapper import format_json_output
+
+def _igualar_colunas(texto: str) -> str:
+    """Se alguma linha passa do cabeçalho, completa todas até a mais larga.
+
+    Sem isso o pandas falha ou, quando todas as linhas de dados têm um campo a
+    mais, usa a primeira coluna como índice e ela some da saída. Arquivos sem
+    esse problema voltam sem nenhuma alteração.
+    """
+    limite_anterior = csv.field_size_limit()
+    csv.field_size_limit(max(limite_anterior, len(texto) + 1))
+    try:
+        def linhas(estrito):
+            leitor = csv.reader(io.StringIO(texto, newline=""), strict=estrito)
+            return [l for l in leitor if l and not (len(l) == 1 and not l[0].strip())]
+
+        encontradas = linhas(False)
+        if not encontradas:
+            return texto
+        largura = max(map(len, encontradas))
+        if largura == len(encontradas[0]):
+            return texto
+        cabecalho, *registros = linhas(True)  # aspas inválidas não são adivinhadas
+    finally:
+        csv.field_size_limit(limite_anterior)
+
+    cabecalho += [f"Unnamed: {i}" for i in range(len(cabecalho), largura)]
+    saida = io.StringIO(newline="")
+    escritor = csv.writer(saida)
+    escritor.writerow(cabecalho)
+    escritor.writerows(l + [""] * (largura - len(l)) for l in registros)
+    return saida.getvalue()
+
+
+def _ler_csv(file_path: str) -> pd.DataFrame:
+    with open(file_path, "rb") as arquivo:
+        texto = decodificar_csv(arquivo.read())
+    return pd.read_csv(io.StringIO(_igualar_colunas(texto), newline=""))
 
 def parse_tabular_to_json(file_path: str) -> dict:
     """
@@ -14,7 +54,7 @@ def parse_tabular_to_json(file_path: str) -> dict:
             df = pd.read_excel(file_path, engine='odf')
         else:
             # Assume CSV as fallback for tabular
-            df = pd.read_csv(file_path)
+            df = _ler_csv(file_path)
             
         # Converte para JSON e volta via df.to_json(), não df.to_dict(): em
         # colunas numéricas, .where(pd.notnull(df), None) não remove o NaN

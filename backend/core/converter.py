@@ -5,6 +5,7 @@ servidor MCP são camadas finas que chamam estas funções. Todas as importaçõ
 pesadas (pandas, markitdown, PDF) são preguiçosas para o início ser rápido.
 """
 import importlib.util
+import io
 import os
 import tempfile
 from typing import List, Optional
@@ -83,6 +84,20 @@ def _extract_odt_text(file_path: str) -> str:
     return extracted_text.strip()
 
 
+def _csv_para_markdown(file_path: str, md) -> str:
+    """Entrega o CSV ao MarkItDown já em UTF-8.
+
+    Deixado por conta própria, o motor detecta a codificação e estraga textos
+    curtos em português sem acusar erro.
+    """
+    from markitdown import StreamInfo
+    from core.codificacao_csv import decodificar_csv
+    with open(file_path, "rb") as arquivo:
+        dados = decodificar_csv(arquivo.read()).encode("utf-8")
+    info = StreamInfo(extension=".csv", mimetype="text/csv", charset="utf-8")
+    return md.convert_stream(io.BytesIO(dados), stream_info=info).text_content
+
+
 def convert_file(file_path: str, target_format: Optional[str], md,
                  llm_provider: Optional[str] = "openai",
                  llm_api_key: Optional[str] = None,
@@ -127,6 +142,9 @@ def convert_file(file_path: str, target_format: Optional[str], md,
                 os.remove(xlsx_path)
             except OSError:
                 pass
+
+    if suffix == '.csv':
+        return {"markdown": _csv_para_markdown(file_path, md)}
 
     markdown = md.convert(file_path).text_content
     if suffix in PLANILHAS:

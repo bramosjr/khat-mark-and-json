@@ -80,6 +80,7 @@ markitdown-backend describe        # (ou --schema) lista comandos, ferramentas M
 - `--dry-run` valida tudo (caminhos, extensão, tamanho, confinamento, dependências do conversor) sem converter nem gravar.
 - Com `--json`, a saída e os erros são JSON: `{"erro": "...", "codigo": "..."}`.
 - Extensões aceitas: `.pdf .docx .pptx .xlsx .xls .csv .ods .odt .html .htm .xml .json .txt .md .epub .msg` (`.zip` fica de fora por segurança). Limite de entrada: 50 MB (`--max-input-mb`).
+- CSV, em Markdown e em JSON, aceita UTF-8, UTF-16 com marca inicial e Windows-1252/Latin-1; outras codificações dependem de detecção automática. Em JSON, se alguma linha tiver mais campos que o cabeçalho, as colunas extras entram como `Unnamed: N`.
 
 **Códigos de saída:** `0` sucesso · `1` erro de negócio (campo `codigo`: `ENTRADA_INVALIDA`, `ARQUIVO_NAO_ENCONTRADO`, `EXTENSAO_NAO_SUPORTADA`, `ARQUIVO_GRANDE`, `CAMINHO_RECUSADO`, `SAIDA_EXISTE`, `CONTEUDO_GRANDE`, `CONVERSAO_FALHOU`, `ERRO_DE_ESCRITA`, `DEPENDENCIA_AUSENTE`) · `2` uso incorreto ou argumento inválido.
 
