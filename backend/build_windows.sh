@@ -9,18 +9,11 @@ echo "Iniciando compilação do Backend para Windows (usando Wine)..."
 wine python -m pip install -r requirements.txt
 wine python -m pip install pyinstaller
 
-if [ ! -f "gswin64c.exe" ]; then
-    echo "Baixando Ghostscript portatil para Windows..."
-    # Fazendo o download do instalador e extraindo o binário ou baixando de fonte confiável
-    # Aqui usaremos um stub, na prática o usuário deve fornecer o gswin64c.exe na pasta.
-    echo "POR FAVOR, garanta que o 'gswin64c.exe' está na pasta backend!"
-fi
-
 echo "Compilando com PyInstaller via Wine..."
 WINEDLLOVERRIDES="ucrtbase=n,b" wine pyinstaller --name markitdown-backend \
             --onefile \
-            --add-binary "gswin64c.exe;." \
-            --add-binary "gsdll64.dll;." \
+            --clean \
+            --noconfirm \
             --collect-all "magika" \
             --collect-all "markitdown" \
             --collect-all "mammoth" \
@@ -28,11 +21,14 @@ WINEDLLOVERRIDES="ucrtbase=n,b" wine pyinstaller --name markitdown-backend \
             --hidden-import "xlrd" \
             --hidden-import "uvicorn" \
             --hidden-import "fastapi" \
+            --hidden-import "multipart" \
             --hidden-import "pandas" \
             --hidden-import "odf" \
             --hidden-import "fitz" \
             --hidden-import "pdfplumber" \
-            --hidden-import "camelot" \
             main.py
+
+echo "Gerando version-info.json..."
+wine python build_version_info.py
 
 echo "Build Windows Finalizado! Executável gerado na pasta dist/"

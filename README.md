@@ -22,7 +22,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 - **Suporte Estendido de Arquivos**: Além dos formatos suportados nativamente pelo motor original (PDF, DOCX, XLSX, PPTX, HTML, CSV e Imagens), o **Khat estende a biblioteca da Microsoft**, adicionando interceptadores exclusivos para dar suporte inédito a arquivos do LibreOffice/OpenDocument (`.ods` e `.odt`).
 
 ## Estrutura do Projeto
-- `/backend`: API Python e script de compilação do sidecar (`build.sh`).
+- `/backend`: API Python e scripts de compilação do sidecar (`build_linux.sh` e `build_windows.sh`).
 - `/frontend`: Aplicação Vite + React e orquestrador Electron (`main.cjs`).
 
 ## Como Rodar Localmente (Desenvolvimento)
@@ -50,7 +50,11 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 Para gerar os instaladores e binários nativos de distribuição:
 1. Compile o backend em um único executável:
    ```bash
-   cd backend && ./build.sh
+   cd backend && ./build_linux.sh
+   ```
+   Para conferir o executável gerado (requer `requirements-dev.txt`):
+   ```bash
+   cd backend && venv/bin/python verificar_binario.py
    ```
 2. Empacote com o `electron-builder`:
    ```bash

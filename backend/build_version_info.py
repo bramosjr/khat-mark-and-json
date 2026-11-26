@@ -19,7 +19,6 @@ OTHER_LIBRARIES = [
     "anthropic",
     "PyMuPDF",
     "pdfplumber",
-    "camelot-py",
     "olefile",
     "pandas",
     "openpyxl",

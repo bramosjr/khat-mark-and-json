@@ -13,7 +13,6 @@ const LIBRARY_INFO = {
   'anthropic': { label: 'Anthropic SDK', url: 'https://pypi.org/project/anthropic/' },
   'PyMuPDF': { label: 'PyMuPDF', url: 'https://pypi.org/project/PyMuPDF/' },
   'pdfplumber': { label: 'pdfplumber', url: 'https://pypi.org/project/pdfplumber/' },
-  'camelot-py': { label: 'Camelot', url: 'https://pypi.org/project/camelot-py/' },
   'olefile': { label: 'olefile', url: 'https://pypi.org/project/olefile/' },
   'pandas': { label: 'pandas', url: 'https://pypi.org/project/pandas/' },
   'openpyxl': { label: 'openpyxl', url: 'https://pypi.org/project/openpyxl/' },
@@ -24,7 +23,7 @@ const LIBRARY_INFO = {
 // na mesma ordem de sempre.
 const LIBRARY_ORDER = [
   'markitdown', 'openai', 'google-genai', 'anthropic', 'PyMuPDF',
-  'pdfplumber', 'camelot-py', 'olefile', 'pandas', 'openpyxl', 'odfpy',
+  'pdfplumber', 'olefile', 'pandas', 'openpyxl', 'odfpy',
 ]
 
 export function AboutModal({ versionInfo, updateStatus, appUpdateStatus, onToggleAppUpdate, onClose }) {

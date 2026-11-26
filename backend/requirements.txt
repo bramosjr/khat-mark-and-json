@@ -7,7 +7,6 @@ google-genai
 anthropic
 PyMuPDF
 pdfplumber
-camelot-py[cv]
 olefile
 pandas
 openpyxl

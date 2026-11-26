@@ -19,7 +19,7 @@ def isolate_stdout() -> TextIO:
     """Reserva o stdout real só para o protocolo.
 
     Duplica o fd 1 e aponta o fd 1 para o stderr, para que `print()`, avisos de
-    bibliotecas e subprocessos (ex.: Ghostscript) nunca corrompam o JSON-RPC.
+    bibliotecas e subprocessos nunca corrompam o JSON-RPC.
     """
     try:
         sys.stdout.flush()

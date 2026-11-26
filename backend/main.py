@@ -14,10 +14,6 @@ import tempfile
 import os
 import sys
 
-# Suporte PyInstaller para localizar o Ghostscript embutido
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    os.environ["PATH"] = sys._MEIPASS + os.pathsep + os.environ.get("PATH", "")
-
 import traceback
 from typing import Optional
 

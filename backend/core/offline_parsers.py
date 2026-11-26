@@ -33,7 +33,7 @@ def parse_pdf_to_json_offline(file_path: str) -> dict:
     """
     Faz um processamento de PDF puro offline sem chaves de API.
     Lógica de fallback que simula o LLMSherpa usando heurística nativa (font size/weight)
-    e extração de tabelas via pdfplumber/Camelot.
+    e extração de tabelas via pdfplumber.
     """
     import fitz  # PyMuPDF
     import pdfplumber
