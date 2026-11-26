@@ -62,6 +62,8 @@ Para gerar os instaladores e binários nativos de distribuição:
    ```
 Os arquivos finais de instalação estarão dentro de `frontend/release/`.
 
+No app instalado, `khat-mark-and-json --help` (ou `-h`) e `--version` respondem no terminal e encerram, sem abrir a janela (no Windows, esse comportamento não foi verificado). A conversão por linha de comando é feita pelo `markitdown-backend`, descrito abaixo.
+
 ## Automação por agentes de IA (CLI e servidor MCP)
 
 O mesmo binário do backend (`markitdown-backend`; em desenvolvimento, `python backend/main.py`) funciona como CLI e como servidor MCP quando recebe argumentos. **Sem argumentos**, sobe o servidor HTTP usado pela interface gráfica. Tudo é 100% offline e headless: não abre janelas, não usa rede nem LLM.

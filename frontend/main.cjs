@@ -7,6 +7,7 @@ const { checkForUpdate, readVersionInfo } = require('./update-checker.cjs');
 const {
   checkForAppUpdate, readAppUpdateState, setAppUpdateEnabled, isAppUpdateEnabled,
 } = require('./app-update-checker.cjs');
+const { cliResponse } = require('./cli-args.cjs');
 
 app.name = 'khat-mark-and-json';
 app.setAppUserModelId('khat-mark-and-json');
@@ -128,9 +129,14 @@ function createWindow() {
   }
 }
 
-const gotTheLock = app.requestSingleInstanceLock();
+const cliText = cliResponse(process.argv.slice(1), getVersionInfo().app_version || app.getVersion());
 
-if (!gotTheLock) {
+// A ordem importa: --help e --version respondem antes do bloqueio de instância
+// única, para não acionar a janela de um app que já esteja aberto.
+if (cliText !== null) {
+  process.stdout.write(cliText);
+  app.exit(0);
+} else if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
