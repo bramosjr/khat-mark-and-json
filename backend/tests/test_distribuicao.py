@@ -7,7 +7,7 @@ import pytest
 
 RAIZ = Path(__file__).resolve().parents[2]
 FRONT = RAIZ / "frontend"
-VERSAO, LICENCA = "0.1.2", "AGPL-3.0-only"
+VERSAO, LICENCA = "0.1.3", "AGPL-3.0-only"
 
 
 def _texto(caminho):
@@ -23,6 +23,11 @@ def test_versao_igual_nos_tres_lugares():
     primeira = re.search(r'<release version="([^"]+)"', _texto("frontend/build/khat-mark-and-json.metainfo.xml"))
     assert [_pacote()["version"], lock["version"], lock["packages"][""]["version"],
             primeira.group(1)] == [VERSAO] * 4
+
+
+def test_readme_e_aviso_citam_a_versao_atual():
+    assert f"**Plataformas**: a versão {VERSAO} é distribuída" in _texto("README.md")
+    assert f"`v{VERSAO}`" in _texto("NOTICE.md")
 
 
 def test_pacotes_declaram_agpl():

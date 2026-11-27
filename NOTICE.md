@@ -17,7 +17,7 @@ empacotado, como um todo, é distribuído sob a AGPL-3.0-only** (texto em
 
 O código-fonte correspondente a cada versão está em
 https://github.com/bramosjr/khat-mark-and-json, na tag da versão (por exemplo,
-`v0.1.2`), junto com os scripts de build. O código do PyMuPDF está em
+`v0.1.3`), junto com os scripts de build. O código do PyMuPDF está em
 https://github.com/pymupdf/PyMuPDF. As versões das bibliotecas usadas aparecem
 em `LICENCAS-TERCEIROS.txt`, que vai dentro de cada pacote.
 

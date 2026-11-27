@@ -15,7 +15,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 
 ## Recursos
 - **Saída Dupla (Markdown e JSON)**: Escolha entre converter seus documentos para um formato de leitura limpo (Markdown) ou extrair todos os dados em um formato puramente estruturado (JSON), pronto para bancos de dados e APIs.
-- **Plataformas**: a versão 0.1.2 é distribuída para **Linux x86_64**, em `.deb`, `.rpm`, `.pacman` e AppImage. O `.deb` foi instalado; o `.rpm` e o `.pacman` tiveram o conteúdo conferido, sem teste de instalação; o AppImage não foi executado. Não há pacotes para Windows ou macOS.
+- **Plataformas**: a versão 0.1.3 é distribuída para **Linux x86_64**, em `.deb`, `.rpm`, `.pacman` e AppImage. O `.deb` foi instalado; o `.rpm`, o `.pacman` e a AppImage tiveram o conteúdo conferido, sem teste de instalação nem de execução do arquivo. Não há pacotes para Windows ou macOS.
 - **Design Premium**: Interface baseada em *Glassmorphism* limpa e intuitiva construída com React e Vite.
 - **Backend Autônomo**: Processamento via FastAPI no Python, empacotado internamente (Sidecar) via PyInstaller.
 - **Suporte a LLM (Inteligência Artificial)**: Basta inserir sua chave de API nas configurações para liberar leitura de imagens e diagramas avançados.
