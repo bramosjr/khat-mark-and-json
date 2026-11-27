@@ -103,3 +103,14 @@ def test_componente_sem_texto_interrompe_a_geracao(tmp_path, monkeypatch):
     monkeypatch.setattr(gera_licencas, "TEXTOS_EXTERNOS", tmp_path / "vazio")
     with pytest.raises(gera_licencas.LicencaAusente, match="sem texto de licença para cobble"):
         gera_licencas.gerar(tmp_path / "l.txt")
+
+
+def test_licenca_do_cobble_traz_a_declaracao_do_autor_sem_preencher_o_modelo():
+    texto = _texto("licenses/terceiros/cobble-0.1.4.txt")
+    assert "2-Clause BSD <http://opensource.org/licenses/BSD-2-Clause>" in texto
+    assert "sem indicar a variante" not in texto
+    # o modelo fica como a OSI o publica: ninguém preenche em nome do autor
+    assert "Copyright <YEAR> <COPYRIGHT HOLDER>" in texto
+    assert "Redistributions in binary form must reproduce" in texto
+    assert "IN NO EVENT SHALL THE COPYRIGHT HOLDER" in " ".join(texto.split())
+    assert "titular e o ano" in texto

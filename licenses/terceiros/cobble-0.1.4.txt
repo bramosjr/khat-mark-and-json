@@ -1,6 +1,42 @@
-ATENÇÃO: o cobble não publica o texto da licença. A distribuição, a tag 0.1.4 e o repositório
-(https://github.com/mwilliamson/python-cobble) não têm arquivo de licença. O autor, Michael
-Williamson, declara nos metadados: "License :: OSI Approved :: BSD License", sem indicar a variante.
+ATENÇÃO: o cobble não publica o texto da licença com o titular e o ano. A distribuição, a tag
+0.1.4 e o repositório (https://github.com/mwilliamson/python-cobble) não têm arquivo de licença
+nem aviso de direito autoral próprio do cobble.
+
+O autor, Michael Williamson, declara a licença na seção "License" do README (ramo principal, tag
+0.1.4, código-fonte no PyPI e metadados da distribuição):
+
+    2-Clause BSD <http://opensource.org/licenses/BSD-2-Clause>
+
+O classificador dos metadados é genérico: "License :: OSI Approved :: BSD License".
+
+Abaixo está o modelo do endereço indicado pelo autor, como a Open Source Initiative o publica.
+Os campos <YEAR> e <COPYRIGHT HOLDER> continuam por preencher: nada foi redigido ou completado
+em nome do autor.
+Fonte: https://opensource.org/license/BSD-2-Clause
+
+--- BSD-2-Clause (modelo da OSI) ---
+
+Copyright <YEAR> <COPYRIGHT HOLDER>
+
+Redistribution and use in source and binary forms, with or without modification, are
+permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of
+conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of
+conditions and the following disclaimer in the documentation and/or other materials provided
+with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS
+OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --- LICENSE do inflection (código incluído em cobble/inflection.py, sob MIT) ---
 Fonte: https://github.com/jpvanhal/inflection/blob/0.3.1/LICENSE

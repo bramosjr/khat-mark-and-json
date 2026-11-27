@@ -16,6 +16,7 @@ pyinstaller --name markitdown-backend \
             --onefile \
             --clean \
             --noconfirm \
+            --exclude-module "readline" \
             --collect-all "magika" \
             --collect-all "markitdown" \
             --collect-all "mammoth" \

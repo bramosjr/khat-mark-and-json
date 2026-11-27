@@ -48,7 +48,11 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 
 ## Compilando para Produção (Build)
 Para gerar os instaladores e binários nativos de distribuição:
-1. Compile o backend em um único executável:
+1. Instale as dependências do frontend. O build do backend precisa delas para gerar a lista de licenças:
+   ```bash
+   cd frontend && npm ci
+   ```
+2. Compile o backend em um único executável:
    ```bash
    cd backend && ./build_linux.sh
    ```
@@ -57,7 +61,7 @@ Para gerar os instaladores e binários nativos de distribuição:
    cd backend && venv/bin/pip install -r requirements-dev.txt -c constraints.txt
    venv/bin/python verificar_binario.py
    ```
-2. Empacote com o `electron-builder`:
+3. Empacote com o `electron-builder`:
    ```bash
    cd frontend && npm run electron:build
    ```
