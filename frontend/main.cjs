@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, session, shell } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const os = require('os');
@@ -115,7 +115,9 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
       contextIsolation: true,
-      sandbox: false
+      sandbox: false,
+      // Ligado, o corretor baixa dicionários da CDN do Chromium (Linux e Windows).
+      spellcheck: false
     },
     autoHideMenuBar: true,
     backgroundColor: '#5C2E20', // Matches our CSS --bg-primary (Argila Escura)
@@ -149,6 +151,9 @@ if (cliText !== null) {
 
   app.whenReady().then(() => {
     app.setAppUserModelId('com.bramosjr.markitdown');
+    // Sem idiomas, a sessão não baixa dicionários. Só o spellcheck: false da
+    // janela não impede o download.
+    session.defaultSession.setSpellCheckerLanguages([]);
     startPythonBackend();
     createWindow();
 

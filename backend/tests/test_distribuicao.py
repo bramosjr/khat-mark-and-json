@@ -63,9 +63,10 @@ def test_lista_de_licencas_cobre_as_dependencias(tmp_path):
     gera_licencas.gerar(destino)
     texto = destino.read_text(encoding="utf-8")
     for nome in ("PyMuPDF", "markitdown", "mammoth", "pandas", "charset-normalizer",
-                 "react", "lucide-react", "PyInstaller"):
+                 "react", "lucide-react", "@fontsource-variable/outfit", "PyInstaller"):
         assert re.search(rf"^## {nome} ", texto, re.IGNORECASE | re.MULTILINE), nome
     assert "AFFERO" in texto and "pytest" not in texto.lower().split("## ")[0]
+    assert "The Outfit Project Authors" in texto and "SIL OPEN FONT LICENSE" in texto
     assert not re.search(r"^## (pytest|xlwt) ", texto, re.IGNORECASE | re.MULTILINE)
 
 
