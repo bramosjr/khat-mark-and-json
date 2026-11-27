@@ -1,7 +1,7 @@
 """Gera a lista de componentes de terceiros e suas licenças, para os pacotes.
 
 Cobre as dependências de execução do backend (a partir de requirements.txt),
-o inicializador do PyInstaller e as bibliotecas da interface (a partir de
+o inicializador do PyInstaller, o setuptools e as bibliotecas da interface (a partir de
 frontend/package.json). Dependências de desenvolvimento ficam de fora.
 
 Todo componente precisa sair com texto. Quando a distribuição instalada não
@@ -132,6 +132,8 @@ def gerar(saida: Path = SAIDA) -> None:
     secoes = [_secao_python(d) for d in _dependencias_python(BACKEND_DIR / "requirements.txt")]
     # o inicializador do PyInstaller vai dentro do executável
     secoes.append(_secao_python(distribution("pyinstaller"), "PyInstaller"))
+    # o setuptools não é dependência do app, mas o PyInstaller o inclui no executável
+    secoes.append(_secao_python(distribution("setuptools")))
     secoes.append(_secao_do_interpretador())
     secoes += _secoes_interface()
     cabecalho = ("Componentes de terceiros do Khat Mark And Json\n"

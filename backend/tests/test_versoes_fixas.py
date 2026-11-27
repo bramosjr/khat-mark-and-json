@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 from packaging.requirements import Requirement
+from packaging.version import Version
 
 import gera_licencas
 
@@ -59,3 +60,12 @@ def test_toda_instalacao_usa_o_arquivo_de_restricoes(arquivo):
                    if "pip install" in l]
     assert instalacoes
     assert [l for l in instalacoes if "-c constraints.txt" not in l] == []
+
+
+# Pisos de segurança (issue #12): abaixo destas versões há falhas conhecidas.
+@pytest.mark.parametrize("nome, minima", [
+    ("pillow", "13.0.0"), ("pyasn1", "0.6.5"), ("setuptools", "84.1.0"),
+    ("soupsieve", "4.0"), ("urllib3", "2.8.0"),
+])
+def test_versao_fixada_nao_volta_a_uma_com_falha_conhecida(nome, minima):
+    assert Version(_fixadas()[nome]) >= Version(minima)
