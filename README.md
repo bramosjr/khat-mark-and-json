@@ -29,7 +29,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 
 ### Pré-requisitos
 - Node.js
-- Python 3.10+
+- Python 3.12+ (exigido pelas versões fixadas em `backend/constraints.txt`)
 
 ### Setup Rápido
 1. Ative o ambiente Python no backend e instale as dependências:
@@ -37,7 +37,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
    cd backend
    python -m venv venv
    source venv/bin/activate  # ou venv\Scripts\activate no Windows
-   pip install -r requirements.txt pyinstaller
+   pip install -r requirements.txt pyinstaller -c constraints.txt
    ```
 2. Inicie o Electron no modo Dev:
    ```bash
@@ -52,9 +52,10 @@ Para gerar os instaladores e binários nativos de distribuição:
    ```bash
    cd backend && ./build_linux.sh
    ```
-   Para conferir o executável gerado (requer `requirements-dev.txt`):
+   Para rodar os testes e conferir o executável gerado, instale antes as dependências de teste:
    ```bash
-   cd backend && venv/bin/python verificar_binario.py
+   cd backend && venv/bin/pip install -r requirements-dev.txt -c constraints.txt
+   venv/bin/python verificar_binario.py
    ```
 2. Empacote com o `electron-builder`:
    ```bash
@@ -63,6 +64,20 @@ Para gerar os instaladores e binários nativos de distribuição:
 Os arquivos finais de instalação estarão dentro de `frontend/release/`.
 
 No app instalado, `khat-mark-and-json --help` (ou `-h`) e `--version` respondem no terminal e encerram, sem abrir a janela (no Windows, esse comportamento não foi verificado). A conversão por linha de comando é feita pelo `markitdown-backend`, descrito abaixo.
+
+## Atualizando as versões das dependências
+O `backend/requirements.txt` lista as dependências diretas; o `backend/constraints.txt` fixa a versão de cada pacote, direto ou indireto. Sem ele, uma instalação nova recebe versões não testadas, que já quebraram a conversão de `.docx`. As versões foram testadas no Linux; pacotes que só existem no Windows não estão fixados. Versões fixas não recebem correções de segurança sozinhas: revise-as antes de cada versão do app.
+
+1. No `constraints.txt`, mude a versão do pacote. Ao adicionar uma dependência, inclua-a no `requirements.txt` e depois fixe no `constraints.txt` as versões que o `pip freeze` mostrar para ela e para as que ela trouxer.
+2. Instale em um ambiente novo, para não perder o anterior, e rode os testes (os da lista de licenças exigem o `npm install` do `frontend` já feito):
+   ```bash
+   cd backend && python -m venv venv-teste
+   venv-teste/bin/pip install -r requirements-dev.txt -c constraints.txt
+   venv-teste/bin/pip install pyinstaller -c constraints.txt
+   venv-teste/bin/python -m pytest
+   ```
+   Se o `pip` apontar conflito, ajuste as versões relacionadas. Se os testes de licença falharem, obtenha o texto da licença da nova versão na fonte oficial e salve em `licenses/terceiros/`.
+3. Compare as saídas de conversão com as da versão anterior, compile e rode o `verificar_binario.py`. Os testes sozinhos não garantem que as saídas sejam iguais.
 
 ## Automação por agentes de IA (CLI e servidor MCP)
 

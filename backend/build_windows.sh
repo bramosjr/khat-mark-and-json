@@ -6,8 +6,8 @@ echo "Iniciando compilação do Backend para Windows (usando Wine)..."
 # Necessita que o python para Windows esteja instalado no Wine
 # Exemplo genérico assumindo que 'wine python' invoca o Python do Windows.
 
-wine python -m pip install -r requirements.txt
-wine python -m pip install pyinstaller
+wine python -m pip install -r requirements.txt -c constraints.txt
+wine python -m pip install pyinstaller -c constraints.txt
 
 echo "Compilando com PyInstaller via Wine..."
 WINEDLLOVERRIDES="ucrtbase=n,b" wine pyinstaller --name markitdown-backend \
