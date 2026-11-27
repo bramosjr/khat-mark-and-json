@@ -15,14 +15,14 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
 
 ## Recursos
 - **Saída Dupla (Markdown e JSON)**: Escolha entre converter seus documentos para um formato de leitura limpo (Markdown) ou extrair todos os dados em um formato puramente estruturado (JSON), pronto para bancos de dados e APIs.
-- **Multi-plataforma**: Construído com Electron, rodando nativamente no Windows, macOS e Linux (.deb, .rpm, .AppImage, flatpak).
+- **Plataformas**: a versão 0.1.2 é distribuída para **Linux x86_64**, em `.deb`, `.rpm`, `.pacman` e AppImage. O `.deb` foi instalado; o `.rpm` e o `.pacman` tiveram o conteúdo conferido, sem teste de instalação; o AppImage não foi executado. Não há pacotes para Windows ou macOS.
 - **Design Premium**: Interface baseada em *Glassmorphism* limpa e intuitiva construída com React e Vite.
 - **Backend Autônomo**: Processamento via FastAPI no Python, empacotado internamente (Sidecar) via PyInstaller.
 - **Suporte a LLM (Inteligência Artificial)**: Basta inserir sua chave de API nas configurações para liberar leitura de imagens e diagramas avançados.
 - **Suporte Estendido de Arquivos**: Além dos formatos suportados nativamente pelo motor original (PDF, DOCX, XLSX, PPTX, HTML, CSV e Imagens), o **Khat estende a biblioteca da Microsoft**, adicionando interceptadores exclusivos para dar suporte inédito a arquivos do LibreOffice/OpenDocument (`.ods` e `.odt`).
 
 ## Estrutura do Projeto
-- `/backend`: API Python e scripts de compilação do sidecar (`build_linux.sh` e `build_windows.sh`).
+- `/backend`: API Python e scripts de compilação do sidecar (`build_linux.sh` e `build_windows.sh`; o de Windows não foi testado).
 - `/frontend`: Aplicação Vite + React e orquestrador Electron (`main.cjs`).
 
 ## Como Rodar Localmente (Desenvolvimento)
@@ -37,7 +37,7 @@ O **Khat** constrói uma interface gráfica (*GUI*) moderna que materializa esse
    cd backend
    python -m venv venv
    source venv/bin/activate  # ou venv\Scripts\activate no Windows
-   pip install "markitdown[all]" fastapi uvicorn python-multipart pyinstaller openai pandas odfpy openpyxl
+   pip install -r requirements.txt pyinstaller
    ```
 2. Inicie o Electron no modo Dev:
    ```bash
